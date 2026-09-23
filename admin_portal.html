@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Portal — tri.io edtech institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --gold-50:#FBF3D9;
+  --gold-100:#F6E7B0;
+  --gold-300:#E8C766;
+  --gold-500:#D4AF37;
+  --gold-600:#C9A227;
+  --gold-700:#B8912A;
+  --gold-gradient:linear-gradient(115deg,var(--gold-600) 0%,var(--gold-100) 24%,var(--gold-300) 45%,var(--gold-50) 58%,var(--gold-600) 80%,var(--gold-300) 100%);
+  --ink:#241F16;
+  --ink-soft:#5B5340;
+  --ink-faint:#8A8168;
+  --paper:#FFFFFF;
+  --paper-warm:#FBF9F4;
+  --paper-sunk:#F5F1E6;
+  --line:rgba(36, 31, 22, 0.122);
+  --line-strong:rgba(36,31,22,0.22);
+  --danger:#9A3B2E;
+  --danger-bg: #F02409;
+  --success:#3B6B3E;
+  --sucess-bg: #11E01E;
+  --shadow-gold:0 10px 30px -12px rgba(201,162,39,0.45);
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0; padding:0;
+    background: var(--gold-100);
+    color: var(--ink-soft);
+    font-family: 'Manrope',sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3,h4{
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  .num{
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  button{
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  input, select{
+    font-family: inherit;
+    font-size: 14px;
+  }
+
+  ::selection{ background: var(--gold-100); color: var(--gold-300); }
+
+  /* ---------- Login screen ---------- */
+  #login-screen{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+      linear-gradient(180deg, rgba(238, 219, 50, 0.872), rgba(227, 222, 179, 0.872)),
+      var(--gold-50);
+  }
+
+  .login-card{
+    width: 100%;
+    max-width: 380px;
+    background: var(--gold-100);
+    border: 1px solid var(--gold-gradient);
+    padding: 40px 36px 32px;
+    position: relative;
+  }
+
+  .login-card::before{
+    content: "";
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border: 1px solid var(--gold-300);
+    pointer-events: none;
+  }
+
+  .brand-mark{
+    display:flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .brand-mark .dot{
+    width: 8px; height: 8px;
+    background: var(--gold-300);
+    border-radius: 50%;
+    transform: translateY(-2px);
+  }
+
+  .brand-name{
+    font-family: 'Manrope',sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink)
+  }
+
+  .brand-sub{
+    color: var(--ink);
+    font-size: 13px;
+    margin: 2px 0 28px;
+  }
+
+  .field{
+    margin-bottom: 16px;
+  }
+
+  .field label{
+    display:block;
+    font-size: 12.5px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .field input{
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--gold-300);
+    background: var(--gold-100);
+    color: var(--ink);
+    outline: none;
+  }
+
+  .field input:focus{
+    border-color: var(--gold-300);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.25);
+  }
+
+  .login-note{
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin: 4px 0 22px;
+    min-height: 16px;
+  }
+
+  .login-note.is-error{ color: var(--danger); }
+  .login-note.is-info{ color: var(--success); }
+
+  .btn-primary{
+    width: 100%;
+    padding: 12px;
+    background: var(--gold-300);
+    color: var(--ink-soft);
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover{ background: var(--gold-500); }
+
+  .btn-primary:disabled{
+    background: #4A4020;
+    color: #8A8168;
+    cursor: not-allowed;
+  }
+
+  /* ---------- App shell ---------- */
+  #app{
+    display: none;
+    min-height: 100vh;
+    grid-template-columns: 220px 1fr;
+  }
+
+  #app.is-active{ display: grid; }
+
+  aside.sidebar{
+    background: var(--gold-300);
+    color: var(--ink-soft);
+    padding: 26px 20px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .sidebar .brand-mark .brand-name{ color: var(--gold-700); font-size: 20px; }
+  .sidebar .brand-mark .dot{ width: 8px; height: 8px; background: var(--gold-700); border-radius: 50%; transform: translateY(-2px); }
+  .sidebar .brand-sub{ color: var(--ink-soft); font-size: 11.5px; margin-bottom: 34px; }
+
+  nav.nav{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  nav.nav button{
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    padding: 10px 12px;
+    font-size: 14px;
+    border-left: 2px solid transparent;
+  }
+
+  nav.nav button:hover{ color: var(--gold-100); }
+
+  nav.nav button.is-active{
+    color: #fff;
+    border-left-color: var(--paper);
+    background: none;
+  }
+
+  .sidebar-footer{
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--ink-soft);
+  }
+
+  .staff-chip{
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .staff-chip .role{
+    display:block;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  .btn-logout{
+    background: none;
+    border: 1px solid var(--gold-100);
+    color: var(--ink-soft);
+    padding: 7px 10px;
+    font-size: 12.5px;
+    width: 100%;
+  }
+
+  .btn-logout:hover{ border-color: #565e73; color: #fff; }
+
+  main.content{
+    padding: 34px 40px 60px;
+    max-width: 1180px;
+  }
+
+  .view{ display: none; }
+  .view.is-active{ display: block; }
+
+  .view-header{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 26px;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .view-header h2{ font-size: 24px; }
+  .view-header .view-sub{ color: var(--ink-soft); font-size: 13px; margin-top: 4px; }
+
+  /* Toggle */
+  .toggle-group{
+    display: inline-flex;
+    border: 1px solid var(--gold-700);
+    background: var(--gold-300);
+  }
+
+  .toggle-group button{
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .toggle-group button.is-active{
+    background: var(--gold-300);
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  /* Totals row */
+  .totals-row{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--gold-300);
+    border: 1px solid var(--gold-500);
+    margin-bottom: 30px;
+  }
+
+  .total-card{
+    background: var(--gold-500);
+    padding: 20px 22px;
+  }
+
+  .total-card .label{
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .total-card .value{
+    font-family: 'Manrope', serif;
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .total-card.revenue .value{ color: var(--success); }
+  .total-card.expense .value{ color: var(--danger); }
+
+  /* Chart */
+  .panel{
+    background: var(--gold-300);
+    border: 1px solid var(--gold-700);
+    padding: 22px 24px;
+    margin-bottom: 30px;
+    color: var(--ink-soft);
+  }
+
+  .panel h3{
+    font-size: 16px;
+    margin-bottom: 16px;
+    color: var(--ink-soft);
+  }
+
+  .chart-wrap{ height: 260px; }
+
+  /* Division table */
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead th{
+    text-align: left;
+    font-weight: 600;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    text-transform: none;
+    padding: 0 10px 10px;
+    border-bottom: 1px solid var(--gold-700);
+  }
+
+  thead th.num-col, tbody td.num-col{ text-align: right; }
+
+  tbody td{
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--gold-700);
+  }
+
+  tbody tr:last-child td{ border-bottom: none; }
+
+  tbody tr:hover{ background: var(--gold-300); }
+
+  td.pos{ color: var(--success); }
+  td.neg{ color: var(--danger); }
+
+  /* Add entry form */
+  .form-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 20px;
+    max-width: 620px;
+  }
+
+  .form-grid .span-2{ grid-column: 1 / -1; }
+
+  .field-block label{
+    display:block;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+
+  .field-block input, .field-block select, .field-block textarea{
+    width: 100%;
+    padding: 10px 11px;
+    border: 1px solid var(--gold-700);
+    background: var(--gold-500);
+    color: var(--ink-soft);
+    outline: none;
+  }
+
+  .field-block input:focus, .field-block select:focus, .field-block textarea:focus{
+    border-color: var(--gold-700);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.25);
+  }
+
+  .field-block textarea{ resize: vertical; min-height: 70px; }
+
+  .type-pick{
+    display: flex;
+    gap: 10px;
+  }
+
+  .type-pick button{
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--gold-700);
+    background: var(--gold-300);
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  .type-pick button[data-type="revenue"].is-active{
+    background: var(--success);
+    border-color: var(--sucess-bg);
+    color: var(--sucess-bg);
+    font-weight: 600;
+  }
+
+  .type-pick button[data-type="expense"].is-active{
+    background: var(--danger);
+    border-color: var(--danger-bg);
+    color: var(--danger-bg);
+    font-weight: 600;
+  }
+
+  .form-actions{
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .btn-submit{
+    padding: 11px 22px;
+    background: var(--gold-500);
+    color: var(--ink-soft);
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .btn-submit:hover{ background: var(--gold-100); }
+
+  .form-status{
+    font-size: 13px;
+    color: var(--success);
+  }
+
+  /* Filters (log view) */
+  .filters{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .filters select, .filters input{
+    padding: 9px 10px;
+    border: 1px solid var(--gold-700);
+    background: var(--gold-300);
+    color: var(--ink-soft);
+    font-size: 13.5px;
+  }
+
+  .empty-state{
+    padding: 40px 10px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+  }
+
+  .division-tag{
+    display: inline-block;
+    font-size: 11.5px;
+    padding: 2px 8px;
+    background: var(--gold-300);
+    border: 1px solid var(--gold-700);
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 860px){
+    #app.is-active{ display: block; }
+    aside.sidebar{ position: static; height: auto; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 16px; }
+    nav.nav{ flex-direction: row; flex-wrap: wrap; }
+    .sidebar-footer{ margin-top: 0; border-top: none; padding-top: 0; }
+    main.content{ padding: 24px 18px 50px; }
+    .form-grid{ grid-template-columns: 1fr; }
+    .totals-row{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="brand-mark"><span class="dot"></span><span class="brand-name">Danest Hotels & Suites</span></div>
+    <div class="field">
+      <label for="login-name">Full name</label>
+      <input id="login-name" type="text" autocomplete="off" placeholder="e.g. Ada Obi">
+    </div>
+    <div class="field">
+      <label for="login-pin">PIN</label>
+      <input id="login-pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="4–6 digits">
+    </div>
+
+    <div class="login-note" id="login-note">New here? Enter a name and choose a PIN — it's registered on your first sign-in.</div>
+
+    <button class="btn-primary" id="login-btn">Sign in</button>
+    <div style="text-align:center; margin-top:18px;"><a href="index.html" style="color:var(--ink-soft); font-size:12.5px;">← Back to website</a></div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <aside class="sidebar">
+    <div>
+      <div class="brand-mark"><span class="dot"></span><span class="brand-name">Danest Hotels & Suites</span></div>
+      <div class="brand-sub">group ledger</div>
+    </div>
+    <nav class="nav">
+      <button data-view="dashboard" class="is-active">Dashboard</button>
+      <button data-view="add-entry">Add entry</button>
+      <button data-view="log">Transaction log</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="staff-chip">Signed in as <strong id="staff-name-display"></strong><span class="role">Staff account</span></div>
+      <a href="index.html" class="btn-logout" style="display:block; text-align:center; text-decoration:none; margin-bottom:8px; box-sizing:border-box;">Back to website</a>
+      <button class="btn-logout" id="logout-btn">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section class="view is-active" id="view-dashboard">
+      <div class="view-header">
+        <div>
+          <h2>Dashboard</h2>
+          <div class="view-sub">Group-wide performance across all nine divisions</div>
+        </div>
+        <div class="toggle-group" id="period-toggle">
+          <button data-period="monthly" class="is-active">Monthly</button>
+          <button data-period="yearly">Yearly</button>
+        </div>
+      </div>
+
+      <div class="totals-row">
+        <div class="total-card revenue">
+          <div class="label">Total revenue</div>
+          <div class="value num" id="total-revenue">₦0</div>
+        </div>
+        <div class="total-card expense">
+          <div class="label">Total expenses</div>
+          <div class="value num" id="total-expense">₦0</div>
+        </div>
+        <div class="total-card">
+          <div class="label">Net position</div>
+          <div class="value num" id="total-net">₦0</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Monthly trend</h3>
+        <div class="chart-wrap"><canvas id="trend-chart"></canvas></div>
+      </div>
+
+      <div class="panel">
+        <h3>Division breakdown</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Division</th>
+              <th class="num-col">Revenue</th>
+              <th class="num-col">Expense</th>
+              <th class="num-col">Net</th>
+            </tr>
+          </thead>
+          <tbody id="division-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- ADD ENTRY ---------- -->
+    <section class="view" id="view-add-entry">
+      <div class="view-header">
+        <div>
+          <h2>Add entry</h2>
+          <div class="view-sub">Log revenue or expense against a division</div>
+        </div>
+      </div>
+
+      <form id="entry-form">
+        <div class="field-block" style="margin-bottom:18px; max-width:620px;">
+          <label>Entry type</label>
+          <div class="type-pick">
+            <button type="button" data-type="revenue" class="is-active">Revenue</button>
+            <button type="button" data-type="expense">Expense</button>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field-block span-2">
+            <label for="entry-division">Division</label>
+            <select id="entry-division" required></select>
+          </div>
+
+          <div class="field-block">
+            <label for="entry-amount">Amount (₦)</label>
+            <input id="entry-amount" type="number" min="0" step="0.01" placeholder="0.00" required>
+          </div>
+
+          <div class="field-block">
+            <label for="entry-date">Date</label>
+            <input id="entry-date" type="date" required>
+          </div>
+
+          <div class="field-block span-2">
+            <label for="entry-category">Source / category</label>
+            <input id="entry-category" type="text" placeholder="e.g. Client retainer, staff transport, equipment lease">
+          </div>
+
+          <div class="field-block span-2">
+            <label for="entry-notes">Notes</label>
+            <textarea id="entry-notes" placeholder="Optional detail for this entry"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-submit">Save entry</button>
+          <span class="form-status" id="form-status"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- ---------- LOG ---------- -->
+    <section class="view" id="view-log">
+      <div class="view-header">
+        <div>
+          <h2>Transaction log</h2>
+          <div class="view-sub">Full history, filterable by division and type</div>
+        </div>
+      </div>
+
+      <div class="filters">
+        <select id="filter-division"><option value="">All divisions</option></select>
+        <select id="filter-type">
+          <option value="">All types</option>
+          <option value="revenue">Revenue</option>
+          <option value="expense">Expense</option>
+        </select>
+        <input type="month" id="filter-month" placeholder="Month">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Division</th>
+            <th>Type</th>
+            <th>Source / category</th>
+            <th class="num-col">Amount</th>
+            <th>Logged by</th>
+          </tr>
+        </thead>
+        <tbody id="log-table-body"></tbody>
+      </table>
+      <div class="empty-state" id="log-empty" style="display:none;">No transactions match these filters yet.</div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+
+  const DIVISIONS = [
+    "Consultancy",
+    "Data Analysis",
+    "Telecommunication",
+    "Publishing",
+    "School Mobile Tutor (Private)",
+    "Student Welfare",
+    "Import & Export",
+    "I.C.T",
+    "Contractor"
+  ];
+
+  const STAFF_KEY = "staff-directory";
+  const TXN_KEY = "transactions";
+
+  let currentUser = null;
+  let staffDirectory = {};
+  let transactions = [];
+  let currentPeriod = "monthly";
+  let trendChart = null;
+
+  // ---------- Utilities ----------
+  function nairaFmt(n){
+    const sign = n < 0 ? "-" : "";
+    const abs = Math.abs(n);
+    return sign + "₦" + abs.toLocaleString("en-NG", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  function todayISO(){
+    return new Date().toISOString().slice(0,10);
+  }
+
+  function monthKey(dateStr){
+    return dateStr.slice(0,7); // YYYY-MM
+  }
+
+  function yearKey(dateStr){
+    return dateStr.slice(0,4);
+  }
+
+  function uid(){
+    return 'tx_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
+  }
+
+  // ---------- Storage ----------
+  async function loadStaffDirectory(){
+    try{
+      const res = await window.storage.get(STAFF_KEY, true);
+      staffDirectory = res ? JSON.parse(res.value) : {};
+    }catch(e){
+      staffDirectory = {};
+    }
+  }
+
+  async function saveStaffDirectory(){
+    try{
+      await window.storage.set(STAFF_KEY, JSON.stringify(staffDirectory), true);
+    }catch(e){
+      console.error("Could not save staff directory", e);
+    }
+  }
+
+  async function loadTransactions(){
+    try{
+      const res = await window.storage.get(TXN_KEY, true);
+      transactions = res ? JSON.parse(res.value) : [];
+    }catch(e){
+      transactions = [];
+    }
+  }
+
+  async function saveTransactions(){
+    try{
+      await window.storage.set(TXN_KEY, JSON.stringify(transactions), true);
+    }catch(e){
+      console.error("Could not save transactions", e);
+      return false;
+    }
+    return true;
+  }
+
+  // ---------- Login ----------
+  const loginScreen = document.getElementById('login-screen');
+  const appRoot = document.getElementById('app');
+  const loginNameInput = document.getElementById('login-name');
+  const loginPinInput = document.getElementById('login-pin');
+  const loginNote = document.getElementById('login-note');
+  const loginBtn = document.getElementById('login-btn');
+
+  async function handleLogin(){
+    const name = loginNameInput.value.trim();
+    const pin = loginPinInput.value.trim();
+
+    if(!name || !pin){
+      setLoginNote("Enter your name and a PIN to continue.", "error");
+      return;
+    }
+    if(!/^\d{4,6}$/.test(pin)){
+      setLoginNote("PIN should be 4–6 digits.", "error");
+      return;
+    }
+
+    loginBtn.disabled = true;
+    await loadStaffDirectory();
+
+    const key = name.toLowerCase();
+    if(staffDirectory[key] !== undefined){
+      if(staffDirectory[key].pin !== pin){
+        setLoginNote("That PIN doesn't match our record for " + staffDirectory[key].displayName + ".", "error");
+        loginBtn.disabled = false;
+        return;
+      }
+      currentUser = staffDirectory[key].displayName;
+    } else {
+      staffDirectory[key] = { displayName: name, pin: pin };
+      await saveStaffDirectory();
+      currentUser = name;
+    }
+
+    loginBtn.disabled = false;
+    enterApp();
+  }
+
+  function setLoginNote(msg, kind){
+    loginNote.textContent = msg;
+    loginNote.className = "login-note" + (kind === "error" ? " is-error" : kind === "info" ? " is-info" : "");
+  }
+
+  loginBtn.addEventListener('click', handleLogin);
+  loginPinInput.addEventListener('keydown', e => { if(e.key === 'Enter') handleLogin(); });
+  loginNameInput.addEventListener('keydown', e => { if(e.key === 'Enter') loginPinInput.focus(); });
+
+  async function enterApp(){
+    loginScreen.style.display = 'none';
+    appRoot.classList.add('is-active');
+    document.getElementById('staff-name-display').textContent = currentUser;
+
+    await loadTransactions();
+    populateDivisionSelects();
+    document.getElementById('entry-date').value = todayISO();
+    renderDashboard();
+    renderLog();
+  }
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    currentUser = null;
+    loginPinInput.value = '';
+    loginNameInput.value = '';
+    setLoginNote("New here? Enter a name and choose a PIN — it's registered on your first sign-in.");
+    appRoot.classList.remove('is-active');
+    loginScreen.style.display = 'flex';
+  });
+
+  // ---------- Nav ----------
+  const navButtons = document.querySelectorAll('nav.nav button');
+  const views = document.querySelectorAll('.view');
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      navButtons.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const target = btn.dataset.view;
+      views.forEach(v => v.classList.toggle('is-active', v.id === 'view-' + target));
+      if(target === 'dashboard') renderDashboard();
+      if(target === 'log') renderLog();
+    });
+  });
+
+  // ---------- Populate division dropdowns ----------
+  function populateDivisionSelects(){
+    const entrySel = document.getElementById('entry-division');
+    const filterSel = document.getElementById('filter-division');
+    DIVISIONS.forEach(d => {
+      const o1 = document.createElement('option');
+      o1.value = d; o1.textContent = d;
+      entrySel.appendChild(o1);
+
+      const o2 = document.createElement('option');
+      o2.value = d; o2.textContent = d;
+      filterSel.appendChild(o2);
+    });
+  }
+
+  // ---------- Add entry form ----------
+  let selectedType = 'revenue';
+  document.querySelectorAll('.type-pick button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.type-pick button').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      selectedType = btn.dataset.type;
+    });
+  });
+
+  document.getElementById('entry-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const division = document.getElementById('entry-division').value;
+    const amount = parseFloat(document.getElementById('entry-amount').value);
+    const date = document.getElementById('entry-date').value;
+    const category = document.getElementById('entry-category').value.trim();
+    const notes = document.getElementById('entry-notes').value.trim();
+    const statusEl = document.getElementById('form-status');
+
+    if(!division || !amount || amount <= 0 || !date){
+      statusEl.style.color = 'var(--rust)';
+      statusEl.textContent = 'Fill in division, a positive amount, and a date.';
+      return;
+    }
+
+    const entry = {
+      id: uid(),
+      division, type: selectedType, amount, category, notes, date,
+      staff: currentUser,
+      createdAt: new Date().toISOString()
+    };
+
+    transactions.push(entry);
+    const ok = await saveTransactions();
+
+    if(ok){
+      statusEl.style.color = 'var(--forest)';
+      statusEl.textContent = 'Entry saved.';
+      e.target.reset();
+      document.getElementById('entry-date').value = todayISO();
+      document.querySelectorAll('.type-pick button').forEach(b => b.classList.remove('is-active'));
+      document.querySelector('.type-pick button[data-type="revenue"]').classList.add('is-active');
+      selectedType = 'revenue';
+      renderDashboard();
+      renderLog();
+    } else {
+      statusEl.style.color = 'var(--rust)';
+      statusEl.textContent = 'Could not save — please try again.';
+    }
+
+    setTimeout(() => { statusEl.textContent = ''; }, 4000);
+  });
+
+  // ---------- Dashboard ----------
+  document.querySelectorAll('#period-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#period-toggle button').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      currentPeriod = btn.dataset.period;
+      renderDashboard();
+    });
+  });
+
+  function currentBucketKey(dateStr){
+    return currentPeriod === 'monthly' ? monthKey(dateStr) : yearKey(dateStr);
+  }
+
+  function renderDashboard(){
+    const nowKey = currentPeriod === 'monthly' ? monthKey(todayISO()) : yearKey(todayISO());
+    const inScope = transactions.filter(t => currentBucketKey(t.date) === nowKey);
+
+    let totalRevenue = 0, totalExpense = 0;
+    const byDivision = {};
+    DIVISIONS.forEach(d => byDivision[d] = { revenue: 0, expense: 0 });
+
+    inScope.forEach(t => {
+      if(t.type === 'revenue'){ totalRevenue += t.amount; byDivision[t.division].revenue += t.amount; }
+      else { totalExpense += t.amount; byDivision[t.division].expense += t.amount; }
+    });
+
+    document.getElementById('total-revenue').textContent = nairaFmt(totalRevenue);
+    document.getElementById('total-expense').textContent = nairaFmt(totalExpense);
+    document.getElementById('total-net').textContent = nairaFmt(totalRevenue - totalExpense);
+
+    const tbody = document.getElementById('division-table-body');
+    tbody.innerHTML = '';
+    DIVISIONS.forEach(d => {
+      const row = byDivision[d];
+      const net = row.revenue - row.expense;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${d}</td>
+        <td class="num-col num">${nairaFmt(row.revenue)}</td>
+        <td class="num-col num">${nairaFmt(row.expense)}</td>
+        <td class="num-col num ${net >= 0 ? 'pos' : 'neg'}">${nairaFmt(net)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    renderTrendChart();
+  }
+
+  function renderTrendChart(){
+    // Always show last 12 months regardless of period toggle — gives trend context
+    const now = new Date();
+    const labels = [];
+    const revByMonth = [];
+    const expByMonth = [];
+    const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    const buckets = [];
+    for(let i = 11; i >= 0; i--){
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+      buckets.push(key);
+      labels.push(monthNames[d.getMonth()] + " '" + String(d.getFullYear()).slice(2));
+    }
+
+    buckets.forEach(key => {
+      let rev = 0, exp = 0;
+      transactions.forEach(t => {
+        if(monthKey(t.date) === key){
+          if(t.type === 'revenue') rev += t.amount; else exp += t.amount;
+        }
+      });
+      revByMonth.push(rev);
+      expByMonth.push(exp);
+    });
+
+    const ctx = document.getElementById('trend-chart').getContext('2d');
+    if(trendChart) trendChart.destroy();
+    trendChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          { label: 'Revenue', data: revByMonth, backgroundColor: '#D4AF37' },
+          { label: 'Expense', data: expByMonth, backgroundColor: '#5C4A1E' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#B7AE93', font: { family: 'IBM Plex Sans', size: 11 } } },
+          y: {
+            grid: { color: '#2C2718' },
+            ticks: {
+              color: '#B7AE93',
+              font: { family: 'IBM Plex Sans', size: 11 },
+              callback: (v) => '₦' + Number(v).toLocaleString('en-NG', { notation: 'compact' })
+            }
+          }
+        },
+        plugins: {
+          legend: { labels: { color: '#F0E9D8', font: { family: 'IBM Plex Sans', size: 12 } } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => ctx.dataset.label + ': ' + nairaFmt(ctx.parsed.y)
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // ---------- Log ----------
+  const filterDivision = document.getElementById('filter-division');
+  const filterType = document.getElementById('filter-type');
+  const filterMonth = document.getElementById('filter-month');
+  [filterDivision, filterType, filterMonth].forEach(el => el.addEventListener('change', renderLog));
+
+  function renderLog(){
+    let rows = [...transactions].sort((a,b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
+
+    if(filterDivision.value) rows = rows.filter(t => t.division === filterDivision.value);
+    if(filterType.value) rows = rows.filter(t => t.type === filterType.value);
+    if(filterMonth.value) rows = rows.filter(t => monthKey(t.date) === filterMonth.value);
+
+    const tbody = document.getElementById('log-table-body');
+    const emptyEl = document.getElementById('log-empty');
+    tbody.innerHTML = '';
+
+    if(rows.length === 0){
+      emptyEl.style.display = 'block';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    rows.forEach(t => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${t.date}</td>
+        <td><span class="division-tag">${t.division}</span></td>
+        <td class="${t.type === 'revenue' ? 'pos' : 'neg'}">${t.type === 'revenue' ? 'Revenue' : 'Expense'}</td>
+        <td>${t.category || t.notes || '—'}</td>
+        <td class="num-col num ${t.type === 'revenue' ? 'pos' : 'neg'}">${t.type === 'expense' ? '-' : ''}${nairaFmt(t.amount)}</td>
+        <td>${t.staff}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
