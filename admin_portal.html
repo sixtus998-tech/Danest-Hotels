@@ -495,6 +495,30 @@
     color: var(--ink-soft);
   }
 
+  .status-tag{
+    display: inline-block;
+    font-size: 11.5px;
+    padding: 2px 8px;
+    border: 1px solid;
+    font-weight: 600;
+  }
+  .status-tag.st-confirmed{ color: var(--ink-soft); border-color: var(--gold-700); background: var(--gold-300); }
+  .status-tag.st-checkedin{ color: #fff; border-color: var(--success); background: var(--success); }
+  .status-tag.st-checkedout{ color: var(--ink-soft); border-color: var(--ink-soft); background: transparent; }
+  .status-tag.st-cancelled{ color: var(--danger-bg); border-color: var(--danger-bg); background: var(--danger); }
+
+  .row-actions{ display:flex; gap:6px; flex-wrap:wrap; }
+  .btn-row{
+    padding: 5px 9px;
+    font-size: 11.5px;
+    border: 1px solid var(--gold-700);
+    background: var(--gold-300);
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .btn-row:hover{ background: var(--gold-500); }
+  .btn-row.danger{ border-color: var(--danger-bg); color: var(--danger-bg); background: transparent; }
+
   @media (max-width: 860px){
     #app.is-active{ display: block; }
     aside.sidebar{ position: static; height: auto; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 16px; }
@@ -537,6 +561,7 @@
     </div>
     <nav class="nav">
       <button data-view="dashboard" class="is-active">Dashboard</button>
+      <button data-view="reservations">Reservations</button>
       <button data-view="add-entry">Add entry</button>
       <button data-view="log">Transaction log</button>
     </nav>
@@ -595,6 +620,117 @@
           </thead>
           <tbody id="division-table-body"></tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- ---------- RESERVATIONS ---------- -->
+    <section class="view" id="view-reservations">
+      <div class="view-header">
+        <div>
+          <h2>Reservations</h2>
+          <div class="view-sub">Bookings made on the website, plus walk-ins added here — one shared list</div>
+        </div>
+      </div>
+
+      <div class="totals-row">
+        <div class="total-card">
+          <div class="label">Arriving today</div>
+          <div class="value num" id="res-arriving-today">0</div>
+        </div>
+        <div class="total-card">
+          <div class="label">In-house now</div>
+          <div class="value num" id="res-in-house">0</div>
+        </div>
+        <div class="total-card">
+          <div class="label">Departing today</div>
+          <div class="value num" id="res-departing-today">0</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Add a walk-in booking</h3>
+        <form id="walkin-form">
+          <div class="form-grid">
+            <div class="field-block">
+              <label for="wi-room">Room</label>
+              <select id="wi-room" required></select>
+            </div>
+            <div class="field-block">
+              <label for="wi-guests">Guests</label>
+              <input id="wi-guests" type="number" min="1" value="1" required>
+            </div>
+            <div class="field-block">
+              <label for="wi-checkin">Check-in</label>
+              <input id="wi-checkin" type="date" required>
+            </div>
+            <div class="field-block">
+              <label for="wi-checkout">Check-out</label>
+              <input id="wi-checkout" type="date" required>
+            </div>
+            <div class="field-block">
+              <label for="wi-name">Guest full name</label>
+              <input id="wi-name" type="text" placeholder="As it appears on their ID" required>
+            </div>
+            <div class="field-block">
+              <label for="wi-phone">Phone</label>
+              <input id="wi-phone" type="tel" placeholder="+234 ..." required>
+            </div>
+            <div class="field-block">
+              <label for="wi-email">Email (optional)</label>
+              <input id="wi-email" type="email" placeholder="Needed only if the guest wants to manage this online">
+            </div>
+            <div class="field-block">
+              <label for="wi-pay">Payment</label>
+              <select id="wi-pay">
+                <option value="hotel">Pay at hotel (cash/card)</option>
+                <option value="transfer">Bank transfer</option>
+              </select>
+            </div>
+            <div class="field-block span-2">
+              <label for="wi-notes">Notes (optional)</label>
+              <textarea id="wi-notes" placeholder="Anything the desk or housekeeping should know"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Add booking</button>
+            <span class="form-status" id="wi-status"></span>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>All reservations</h3>
+        <div class="filters">
+          <select id="res-filter-status">
+            <option value="">All statuses</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Checked-in">Checked-in</option>
+            <option value="Checked-out">Checked-out</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <select id="res-filter-scope">
+            <option value="">All dates</option>
+            <option value="today">Today's arrivals &amp; departures</option>
+          </select>
+          <input type="text" id="res-filter-search" placeholder="Search name, email, phone or reference">
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Guest</th>
+              <th>Room</th>
+              <th>Check-in</th>
+              <th>Check-out</th>
+              <th>Source</th>
+              <th>Status</th>
+              <th class="num-col">Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="res-table-body"></tbody>
+        </table>
+        <div class="empty-state" id="res-empty" style="display:none;">No reservations match these filters yet.</div>
       </div>
     </section>
 
@@ -735,6 +871,187 @@
     return 'tx_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
   }
 
+  // ---------- Reservations ----------
+  // Reads/writes the SAME localStorage key the customer-facing index.html
+  // uses ("danest_bookings"), and the SAME field names, so a booking made
+  // on the website shows up here, and a walk-in added here shows up if the
+  // guest later looks themselves up on the website. Keep ROOMS below in
+  // sync with the ROOMS list in index.html if room types or prices change.
+  const BOOKINGS_KEY = "danest_bookings";
+  const ROOMS = [
+    {id:'standard',  name:'Standard Room',  price:45000},
+    {id:'deluxe',    name:'Deluxe Room',    price:68000},
+    {id:'executive', name:'Executive Room', price:95000},
+    {id:'suite',     name:'Danest Suite',   price:150000},
+  ];
+
+  function loadBookings(){
+    try{
+      const raw = localStorage.getItem(BOOKINGS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){
+      return [];
+    }
+  }
+  function saveBookings(list){
+    try{
+      localStorage.setItem(BOOKINGS_KEY, JSON.stringify(list));
+      return true;
+    }catch(e){
+      console.error("Could not save bookings", e);
+      return false;
+    }
+  }
+  function genBookingRef(){
+    return 'DN-' + Math.random().toString(36).slice(2,6).toUpperCase() + '-' + Math.random().toString(36).slice(2,5).toUpperCase();
+  }
+  function nightsBetween(a,b){
+    if(!a || !b) return 0;
+    return Math.round((new Date(b) - new Date(a)) / 86400000);
+  }
+
+  function populateRoomSelect(){
+    const sel = document.getElementById('wi-room');
+    sel.innerHTML = ROOMS.map(r => `<option value="${r.id}">${r.name} — ${nairaFmt(r.price)}/night</option>`).join('');
+  }
+
+  function statusTagHtml(status){
+    const map = {
+      'Confirmed':   'st-confirmed',
+      'Checked-in':  'st-checkedin',
+      'Checked-out': 'st-checkedout',
+      'Cancelled':   'st-cancelled',
+    };
+    return `<span class="status-tag ${map[status] || 'st-confirmed'}">${status}</span>`;
+  }
+
+  function setBookingStatus(ref, newStatus){
+    const list = loadBookings();
+    const idx = list.findIndex(b => b.ref === ref);
+    if(idx === -1) return;
+    list[idx].status = newStatus;
+    saveBookings(list);
+    renderReservations();
+  }
+  window.setBookingStatus = setBookingStatus; // reachable from the inline onclick= in the table rows below
+
+  function renderReservations(){
+    const all = loadBookings();
+    const today = todayISO();
+
+    const arrivingToday = all.filter(b => b.checkIn === today && b.status === 'Confirmed').length;
+    const inHouse = all.filter(b => b.status === 'Checked-in').length;
+    const departingToday = all.filter(b => b.checkOut === today && b.status === 'Checked-in').length;
+    document.getElementById('res-arriving-today').textContent = arrivingToday;
+    document.getElementById('res-in-house').textContent = inHouse;
+    document.getElementById('res-departing-today').textContent = departingToday;
+
+    const statusFilter = document.getElementById('res-filter-status').value;
+    const scopeFilter = document.getElementById('res-filter-scope').value;
+    const search = document.getElementById('res-filter-search').value.trim().toLowerCase();
+
+    let rows = all.slice().sort((a,b) => (b.createdAt||'').localeCompare(a.createdAt||''));
+    if(statusFilter) rows = rows.filter(b => b.status === statusFilter);
+    if(scopeFilter === 'today') rows = rows.filter(b => b.checkIn === today || b.checkOut === today);
+    if(search){
+      rows = rows.filter(b =>
+        (b.name||'').toLowerCase().includes(search) ||
+        (b.email||'').toLowerCase().includes(search) ||
+        (b.phone||'').toLowerCase().includes(search) ||
+        (b.ref||'').toLowerCase().includes(search)
+      );
+    }
+
+    const tbody = document.getElementById('res-table-body');
+    const emptyEl = document.getElementById('res-empty');
+    tbody.innerHTML = '';
+
+    if(rows.length === 0){
+      emptyEl.style.display = 'block';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    rows.forEach(b => {
+      let actions = '';
+      if(b.status === 'Confirmed'){
+        actions = `<button class="btn-row" onclick="setBookingStatus('${b.ref}','Checked-in')">Check in</button>
+                   <button class="btn-row danger" onclick="setBookingStatus('${b.ref}','Cancelled')">Cancel</button>`;
+      } else if(b.status === 'Checked-in'){
+        actions = `<button class="btn-row" onclick="setBookingStatus('${b.ref}','Checked-out')">Check out</button>`;
+      }
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${b.ref}</td>
+        <td>${b.name || '—'}<br><span style="font-size:11.5px;color:var(--ink-soft);">${b.phone || b.email || ''}</span></td>
+        <td>${b.roomName || b.roomId || '—'}</td>
+        <td>${b.checkIn || '—'}</td>
+        <td>${b.checkOut || '—'}</td>
+        <td>${b.source === 'walk-in' ? 'Walk-in' : 'Online'}</td>
+        <td>${statusTagHtml(b.status || 'Confirmed')}</td>
+        <td class="num-col num">${nairaFmt(b.total || 0)}</td>
+        <td><div class="row-actions">${actions}</div></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('res-filter-status').addEventListener('change', renderReservations);
+  document.getElementById('res-filter-scope').addEventListener('change', renderReservations);
+  document.getElementById('res-filter-search').addEventListener('input', renderReservations);
+
+  document.getElementById('walkin-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const statusEl = document.getElementById('wi-status');
+    const roomId = document.getElementById('wi-room').value;
+    const room = ROOMS.find(r => r.id === roomId);
+    const checkIn = document.getElementById('wi-checkin').value;
+    const checkOut = document.getElementById('wi-checkout').value;
+    const guests = parseInt(document.getElementById('wi-guests').value, 10) || 1;
+    const name = document.getElementById('wi-name').value.trim();
+    const phone = document.getElementById('wi-phone').value.trim();
+    const email = document.getElementById('wi-email').value.trim();
+    const pay = document.getElementById('wi-pay').value;
+    const notes = document.getElementById('wi-notes').value.trim();
+
+    const nights = nightsBetween(checkIn, checkOut);
+    if(!name || !phone){
+      statusEl.textContent = 'Enter the guest\'s name and phone number.';
+      statusEl.style.color = 'var(--danger-bg)';
+      return;
+    }
+    if(!checkIn || !checkOut || nights < 1){
+      statusEl.textContent = 'Check-out must be at least one night after check-in.';
+      statusEl.style.color = 'var(--danger-bg)';
+      return;
+    }
+
+    const subtotal = room.price * nights;
+    const tax = Math.round(subtotal * 0.075);
+    const total = subtotal + tax;
+    const list = loadBookings();
+    list.push({
+      ref: genBookingRef(),
+      roomId: room.id, roomName: room.name,
+      checkIn, checkOut, nights, guests,
+      name, email, phone, notes, pay,
+      subtotal, tax, total,
+      status: 'Confirmed',
+      source: 'walk-in',
+      createdAt: new Date().toISOString(),
+    });
+    saveBookings(list);
+
+    e.target.reset();
+    document.getElementById('wi-checkin').value = todayISO();
+    document.getElementById('wi-guests').value = 1;
+    statusEl.textContent = 'Booking added.';
+    statusEl.style.color = 'var(--success)';
+    setTimeout(() => { statusEl.textContent = ''; }, 3000);
+    renderReservations();
+  });
+
+
   // ---------- Storage ----------
   // Saved with plain localStorage: it's per-browser/per-device (each staff
   // member's login and entries live on the machine they used), which is a
@@ -837,6 +1154,10 @@
     document.getElementById('entry-date').value = todayISO();
     renderDashboard();
     renderLog();
+
+    populateRoomSelect();
+    document.getElementById('wi-checkin').value = todayISO();
+    renderReservations();
   }
 
   document.getElementById('logout-btn').addEventListener('click', () => {
@@ -860,6 +1181,7 @@
       views.forEach(v => v.classList.toggle('is-active', v.id === 'view-' + target));
       if(target === 'dashboard') renderDashboard();
       if(target === 'log') renderLog();
+      if(target === 'reservations') renderReservations();
     });
   });
 
