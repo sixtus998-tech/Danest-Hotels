@@ -703,8 +703,8 @@
     "Contractor"
   ];
 
-  const STAFF_KEY = "staff-directory";
-  const TXN_KEY = "transactions";
+  const STAFF_KEY = "danest_admin_staff_directory";
+  const TXN_KEY = "danest_admin_transactions";
 
   let currentUser = null;
   let staffDirectory = {};
@@ -736,10 +736,14 @@
   }
 
   // ---------- Storage ----------
+  // Saved with plain localStorage: it's per-browser/per-device (each staff
+  // member's login and entries live on the machine they used), which is a
+  // real limitation to know about — see the note further down about a
+  // shared/real-time database being the eventual fix for this.
   async function loadStaffDirectory(){
     try{
-      const res = await window.storage.get(STAFF_KEY, true);
-      staffDirectory = res ? JSON.parse(res.value) : {};
+      const raw = localStorage.getItem(STAFF_KEY);
+      staffDirectory = raw ? JSON.parse(raw) : {};
     }catch(e){
       staffDirectory = {};
     }
@@ -747,7 +751,7 @@
 
   async function saveStaffDirectory(){
     try{
-      await window.storage.set(STAFF_KEY, JSON.stringify(staffDirectory), true);
+      localStorage.setItem(STAFF_KEY, JSON.stringify(staffDirectory));
     }catch(e){
       console.error("Could not save staff directory", e);
     }
@@ -755,8 +759,8 @@
 
   async function loadTransactions(){
     try{
-      const res = await window.storage.get(TXN_KEY, true);
-      transactions = res ? JSON.parse(res.value) : [];
+      const raw = localStorage.getItem(TXN_KEY);
+      transactions = raw ? JSON.parse(raw) : [];
     }catch(e){
       transactions = [];
     }
@@ -764,7 +768,7 @@
 
   async function saveTransactions(){
     try{
-      await window.storage.set(TXN_KEY, JSON.stringify(transactions), true);
+      localStorage.setItem(TXN_KEY, JSON.stringify(transactions));
     }catch(e){
       console.error("Could not save transactions", e);
       return false;
@@ -1010,8 +1014,8 @@
       data: {
         labels: labels,
         datasets: [
-          { label: 'Revenue', data: revByMonth, backgroundColor: '#D4AF37' },
-          { label: 'Expense', data: expByMonth, backgroundColor: '#5C4A1E' }
+          { label: 'Revenue', data: revByMonth, backgroundColor: '#3B6B3E' },
+          { label: 'Expense', data: expByMonth, backgroundColor: '#9A3B2E' }
         ]
       },
       options: {
