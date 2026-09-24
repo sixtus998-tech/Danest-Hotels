@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Danest Hotel &amp; Suites — Ibadan, Nigeria</title>
+<title>Danest Hotel &amp; Suites — Lagos, Nigeria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -95,7 +95,6 @@ button,input,select,textarea{font-family:inherit;font-size:1rem;color:var(--ink)
 }
 .btn:active{transform:scale(.98);}
 .btn-gold{background:var(--gold-gradient);background-size:220% 100%;color:var(--ink);box-shadow:var(--shadow-gold);}
-@media (prefers-reduced-motion: reduce){ .btn-gold{transition:none;background:var(--gold-gradient);background-size:220% 100%;color:var(--paper);box-shadow:var(--shadow-gold);} }
 .btn-gold:hover{background-position:100% 0;}
 .btn-outline{background:transparent;border-color:var(--line-strong);color:var(--ink);}
 .btn-outline:hover{border-color:var(--gold-600);}
@@ -171,8 +170,9 @@ nav.links a.active{color:var(--ink);border-bottom-color:var(--gold-600);}
 .hero-stats{display:flex;gap:36px;flex-wrap:wrap;}
 .hero-stat b{display:block;font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;}
 .hero-stat span{font-size:.8rem;color:var(--ink-faint);}
-.hero-image-box{size:cover; aspect-ratio:4/5;overflow:hidden;border-radius:4px;box-shadow:0 24px 50px -24px rgba(36,31,22,.28);}
-.hero-image{size:cover;width:100%;height:100%;display:block;object-fit:cover;object-position:center center;}
+.hero-art{position:relative;aspect-ratio:4/5;border-radius:2px;overflow:hidden;border:1px solid var(--line-strong);}
+.art-frame{position:relative;width:100%;height:100%;}
+.art-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 
 /* quick search bar */
 .searchbar{
@@ -378,7 +378,7 @@ a.skip-link:focus{left:12px;top:12px;}
     <div class="foot-grid">
       <div>
         <div class="brand-name" style="color:#fff;margin-bottom:12px;">Danest <span style="color:#C9A227">Hotel &amp; Suites</span></div>
-        <p style="max-width:32ch;">A quiet, gold-trimmed retreat in the heart of Ibadan — considered service, comfortable rooms, and a table worth returning to.</p>
+        <p style="max-width:32ch;">A quiet, gold-trimmed retreat in the heart of Lagos — considered service, comfortable rooms, and a table worth returning to.</p>
         <div class="social-row" style="margin-top:16px;">
           <a href="#" aria-label="Instagram" onclick="return false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
           <a href="#" aria-label="Facebook" onclick="return false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 9h3V6h-3c-2 0-3 1.2-3 3v2H8v3h3v7h3v-7h3l1-3h-4v-1.5c0-.6.3-1.5 1-1.5Z"/></svg></a>
@@ -396,7 +396,7 @@ a.skip-link:focus{left:12px;top:12px;}
       <div>
         <h4>Contact</h4>
         <ul>
-          <li>4, Beckley Street, off Adeyi-Estate Old Bodija Road Ibadan, LGA, Ibadan, Oyo</li>
+          <li>Plot 14, Ajose Adeogun Street, Victoria Island, Lagos</li>
           <li><a href="tel:+2348001234567">+234 800 123 4567</a></li>
           <li><a href="mailto:reservations@danesthotel.com">reservations@danesthotel.com</a></li>
         </ul>
@@ -432,19 +432,19 @@ const ROOMS = [
  {id:'standard', name:'Standard Room', tagline:'Bright, comfortable, and unfussy', price:45000, capacity:2, beds:'1 Queen bed', size:28,
   amenities:['Free Wi-Fi','Air conditioning','40" flat-screen TV','Work desk','En-suite bathroom','Daily housekeeping'],
   long:'A calm, well-proportioned room for guests who want the essentials done properly. Soft linens, a quiet air conditioning unit, and a desk that actually gets used — the Standard Room is Danest at its most straightforward and dependable.',
-  url:'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkHR2tQpwzn7xDgf-OAnKJdW_sFJeTIZ7l1b8bdC3KY87ZeuEAwyRIPzp38Qvbxf5auWWA0sEczjvyZDSc7LW66UYTkELKrLuUMU0KdqgZAHtA7bgy-t_tLy3gaY8_Y9NFvMO0=w253-h168-k-no',},
+  pattern:0},
  {id:'deluxe', name:'Deluxe Room', tagline:'More space, and a view worth waking up to', price:68000, capacity:2, beds:'1 King bed', size:34,
   amenities:['Everything in Standard','City view','Mini bar','Deep soaking tub','24-hour room service','Premium toiletries'],
   long:'Set on the upper floors, Deluxe Rooms trade a little more square footage for a proper city view and a tub worth lingering in. The mini bar is stocked with local favourites, and room service runs around the clock.',
-  url:'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk6J8mFk4MT6qw6Vx-IUqXTIK1cagmVbI5eKjybSnH_vEO3n_0i-ETHCQWCzR7loxSaomUlmmWqrOEbEvvD-KUSBcKg9-uwFu2R-qcAcpzi6CALmxhTw6P1i7K_fBjguEwVtu3r-g=w253-h189-k-no',},
+  pattern:1},
  {id:'executive', name:'Executive Room', tagline:'Room to work, unwind, and host', price:95000, capacity:3, beds:'1 King bed + sofa bed', size:42,
   amenities:['Everything in Deluxe','Executive lounge access','Complimentary breakfast','Work lounge area','Priority check-in'],
   long:'Built for the guest juggling meetings and downtime in the same trip. A separate seating area, lounge access with better coffee than the room service menu admits to, and breakfast included every morning of your stay.',
-  url:'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1mhKr023c0bjpAxdj4xnQAousg4AX9x-ODHQTRH2n9Am_RaDc4tXCMqWgJ4EJf86ClgEyS33QWwFGV88DXBC2qQMd3CPh0tENwGO-RBGcr_pFeEoTKLiX738CrgEX0mVZ62wk=w253-h189-k-no',},
+  pattern:2},
  {id:'suite', name:'Danest Suite', tagline:'The full Danest experience, with room to spare', price:150000, capacity:4, beds:'King bed + separate living area', size:60,
   amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
   long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
-  url:'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlPnlXRLMJCoTKnQdBq8mpVXBuvRe-AaLLtf_IKRLEfQaxZzHMsCwC2HQgJ1W1TB11A6Ov36K--CUKkmY_VwQc9qtwU0KMOL83HeFvNjI_dz5p9N4KUGR1Pu61o2lK4dxMhKFw=w253-h189-k-no'},
+  pattern:3},
 ];
 
 const FACILITIES = [
@@ -476,6 +476,35 @@ const TESTIMONIALS = [
  {q:'Booked in minutes online, confirmed on arrival in even less. Exactly how it should work.', by:'Tunde F. — Abuja'},
  {q:"The Suite\\'s balcony alone is worth the trip back.", by:'Grace M. — Port Harcourt'},
 ];
+
+/* =========================================================================
+   YOUR HOTEL PHOTOS
+   -------------------------------------------------------------------------
+   Right now every picture on the site is a gold line-drawing — that's the
+   "artPanel" you were looking for, generated lower down in this file. You
+   don't need to touch that. To swap a drawing for a real photo:
+
+   1. In your GitHub repo (next to this index.html file), create a folder
+      called "images" and put your photo files in it.
+   2. Below, type the file name next to the matching spot, e.g.
+         heroHome: 'images/lobby.jpg',
+      Keep the quote marks. Leave a line as '' (empty quotes) to keep the
+      gold drawing there for now.
+   3. Save and re-upload/commit. That's it — nothing else in this file
+      needs to change. If a file name is wrong or missing, the drawing
+      just stays put instead of breaking the page.
+   ========================================================================= */
+const PHOTOS = {
+  heroHome:       '',   // big image on the homepage
+  aboutStory:     '',   // "Our story" section on the About page
+  aboutValues:    '',   // "Mission & values" section on the About page
+  restaurant:     '',   // Dining page
+  room_standard:  '',   // Standard Room — used on cards, detail page, and booking
+  room_deluxe:    '',   // Deluxe Room
+  room_executive: '',   // Executive Room
+  room_suite:     '',   // Danest Suite
+  gallery: ['', '', '', '', '', '', '', ''], // the 8 photos on the Gallery page, in order
+};
 
 const money = n => '\u20a6' + n.toLocaleString('en-NG');
 const fmtDate = s => { if(!s) return ''; const d=new Date(s+'T00:00:00'); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); };
@@ -537,6 +566,28 @@ function artPanel(patternIdx, opts){
   </svg>`;
 }
 
+/* Shows the real photo from PHOTOS if one is set for `key`; otherwise falls
+   back to the gold line-drawing. This is the only function that decides
+   photo vs. drawing — you never need to edit it, just the PHOTOS list above. */
+function frame(key, patternIdx, opts, alt){
+  const src = PHOTOS[key];
+  const h = (opts && opts.height) || '100%';
+  if(!src) return artPanel(patternIdx, opts);
+  return `<div class="art-frame" style="height:${h};">
+    <img src="${src}" alt="${alt||''}" loading="lazy" onerror="this.remove()">
+    ${artPanel(patternIdx, opts)}
+  </div>`;
+}
+/* Same idea as frame(), but for the 8 numbered slots in PHOTOS.gallery. */
+function galleryFrame(i, alt){
+  const src = PHOTOS.gallery[i];
+  if(!src) return artPanel(i%4, {height:'100%'});
+  return `<div class="art-frame" style="height:100%;">
+    <img src="${src}" alt="${alt||''}" loading="lazy" onerror="this.remove()">
+    ${artPanel(i%4, {height:'100%'})}
+  </div>`;
+}
+
 /* ---------------- state ---------------- */
 let mobileOpen = false;
 let booking = { checkIn:'', checkOut:'', guests:2, roomId:null, name:'', email:'', phone:'', notes:'', pay:'hotel' };
@@ -595,20 +646,20 @@ function viewHome(){
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <div class="hero-eyebrow">Mokola Hill, Ibadan</div>
-        <h1>A quiet kind of<br><span class="gold-text">luxury</span>, in the heart of Ibadan.</h1>
+        <div class="hero-eyebrow">Victoria Island, Lagos</div>
+        <h1>A quiet kind of<br><span class="gold-text">luxury</span>, in the heart of Lagos.</h1>
         <p class="lead">Danest Hotel &amp; Suites pairs considered service with rooms built for rest — book online in minutes, arrive to a room that's actually ready.</p>
         <div class="hero-ctas">
           <a href="#book" class="btn btn-gold">Check availability</a>
           <a href="#rooms" class="btn btn-outline">View rooms &amp; suites</a>
         </div>
         <div class="hero-stats">
-          <div class="hero-stat"><b>31</b><span>Rooms &amp; suites</span></div>
+          <div class="hero-stat"><b>48</b><span>Rooms &amp; suites</span></div>
           <div class="hero-stat"><b>8</b><span>Years welcoming guests</span></div>
           <div class="hero-stat"><b>4.8</b><span>Average guest rating</span></div>
         </div>
       </div>
-      <div class="hero-art"><img class="hero-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn0EqVW_NxoSmAennsnFJ7xhoArnwFgRZ1n6ffs9VSUiVuIS8PX7kFQsxy5tXht-dYyu1RXyMS33sxasSlbJVUe4HNs_w7nFg3OJ0S0aW8cy8IERj0xaJ71NBnEWYKbpQ4MFJfG=w253-h168-k-no" alt="Danest Hotel & Suites"></div>
+      <div class="hero-art">${frame('heroHome', 3, null, 'Danest Hotel & Suites')}</div>
     </div>
   </section>
   <div class="container">
@@ -633,7 +684,7 @@ function viewHome(){
 
   <section class="pad">
     <div class="container two-col">
-      <div class="hero-image-box"><img class="hero-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnxWgS2Ad0GX_UbYpwwT7648jqWjeQDFCgR3594Xpk8bHG0kyHgmhfDG6L62bvQtZMTbMU5DBu22ZhoV9ZQvQyJUKw8gsfWEUhpOzhFZvkdDEfvD_3UoQDUEdV30DxFz2cZdf9P=w253-h189-k-no" alt="Danest Hotel & Suites"></div>
+      <div class="hero-art" style="aspect-ratio:4/5;">${frame('heroHome', 0, null, 'Danest Hotel & Suites')}</div>
       <div>
         <h2>Danest Hotel &amp; Suites</h2>
         <p>For eight years, Danest has been a fixture on Victoria Island for travellers who want a hotel that runs quietly and well — no long queues, no surprises at check-out, just a comfortable room and a team that anticipates what you need.</p>
@@ -689,7 +740,7 @@ function viewHome(){
 function roomCard(r){
   return `
   <div class="room-card">
-    <div class="room-art"><img class="hero-image" src="${r.url}" alt="${r.name}"></div>
+    <div class="room-art">${frame('room_'+r.id, r.pattern, null, r.name)}</div>
     <div class="room-body">
       <div class="room-top">
         <div>
@@ -728,22 +779,22 @@ function viewAbout(){
         <p>What started as a 20-room property has grown into a 48-room hotel with a full restaurant, event space, and a guest list that includes business travellers, families, and the occasional wedding party that never quite wants to leave.</p>
         <div class="stat-row">
           <div><b>2018</b><span>Founded</span></div>
-          <div><b>31</b><span>Rooms &amp; suites</span></div>
+          <div><b>48</b><span>Rooms &amp; suites</span></div>
           <div><b>150+</b><span>Event capacity</span></div>
         </div>
       </div>
-      <div class="hero-art" style="aspect-ratio:4/5;"><img class="hero-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn0EqVW_NxoSmAennsnFJ7xhoArnwFgRZ1n6ffs9VSUiVuIS8PX7kFQsxy5tXht-dYyu1RXyMS33sxasSlbJVUe4HNs_w7nFg3OJ0S0aW8cy8IERj0xaJ71NBnEWYKbpQ4MFJfG=w253-h168-k-no" alt="Danest Hotel & Suites"></div>
+      <div class="hero-art" style="aspect-ratio:4/5;">${frame('aboutStory', 1, null, 'Danest Hotel & Suites')}</div>
     </div>
   </section>
   <section class="pad bg-warm">
     <div class="container two-col">
-      <div class="hero-art" style="aspect-ratio:4/5;">${artPanel(2)}</div>
+      <div class="hero-art" style="aspect-ratio:4/5;">${frame('aboutValues', 2, null, 'Danest Hotel & Suites')}</div>
       <div>
         <h2>Mission &amp; values</h2>
         <ul class="value-list">
           <li>${icon('check',20)}<div><strong>Considered service.</strong><p style="margin:2px 0 0;">Every request is handled once, properly — not passed between departments.</p></div></li>
           <li>${icon('check',20)}<div><strong>Consistency, always.</strong><p style="margin:2px 0 0;">The room you booked is the room you get, every single stay.</p></div></li>
-          <li>${icon('check',20)}<div><strong>Rooted in Ibadan.</strong><p style="margin:2px 0 0;">Local partnerships, local produce, and a team that knows the city well.</p></div></li>
+          <li>${icon('check',20)}<div><strong>Rooted in Lagos.</strong><p style="margin:2px 0 0;">Local partnerships, local produce, and a team that knows the city well.</p></div></li>
         </ul>
       </div>
     </div>
@@ -787,7 +838,7 @@ function viewRoomDetail(id){
   </div></div>
   <section class="pad">
     <div class="container two-col" style="align-items:flex-start;">
-      <div class="hero-art" style="aspect-ratio:4/5;">${artPanel(r.pattern)}</div>
+      <div class="hero-art" style="aspect-ratio:4/5;">${frame('room_'+r.id, r.pattern, null, r.name)}</div>
       <div>
         <div class="room-price" style="text-align:left;margin-bottom:18px;"><b style="font-size:1.6rem;">${money(r.price)}</b><span>per night, taxes excluded</span></div>
         <p>${r.long}</p>
@@ -843,7 +894,7 @@ function viewGallery(){
   <section class="pad">
     <div class="container">
       <div class="gallery-grid">
-        ${labels.map((l,i)=>`<div class="gallery-item ${i===0?'g1':''}">${artPanel(i%4,{height:'100%'})}<span>${l}</span></div>`).join('')}
+        ${labels.map((l,i)=>`<div class="gallery-item ${i===0?'g1':''}">${galleryFrame(i, l)}<span>${l}</span></div>`).join('')}
       </div>
     </div>
   </section>
@@ -869,7 +920,7 @@ function viewRestaurant(){
         </ul>
         <a href="#contact" class="btn btn-outline" style="margin-top:8px;">Reserve a table</a>
       </div>
-      <div class="hero-art" style="aspect-ratio:4/5;">${artPanel(1)}</div>
+      <div class="hero-art" style="aspect-ratio:4/5;">${frame('restaurant', 1, null, 'The Danest Table')}</div>
     </div>
   </section>
   <section class="pad bg-warm">
@@ -1085,7 +1136,7 @@ function stepSearch(){
       const n = nights();
       const total = r.price * n;
       return `<div class="result-room">
-        <div class="result-thumb">${artPanel(r.pattern)}</div>
+        <div class="result-thumb">${frame('room_'+r.id, r.pattern, null, r.name)}</div>
         <div class="result-info">
           <h4>${r.name}</h4>
           <p>${r.tagline} &middot; Sleeps ${r.capacity} &middot; ${r.beds}</p>
@@ -1171,7 +1222,7 @@ function bookingSummaryCard(r, opts){
   return `
   <div class="card">
     <h3 style="font-size:1.1rem;margin-bottom:16px;">Reservation summary</h3>
-    <div class="result-thumb" style="width:100%;height:130px;margin-bottom:16px;">${artPanel(r.pattern)}</div>
+    <div class="result-thumb" style="width:100%;height:130px;margin-bottom:16px;">${frame('room_'+r.id, r.pattern, null, r.name)}</div>
     <p style="margin:0 0 4px;font-weight:700;color:var(--ink);">${r.name}</p>
     <p style="margin:0 0 14px;font-size:.86rem;">${r.tagline}</p>
     <div class="summary-row"><span>Check-in</span><span>${fmtDate(booking.checkIn)}</span></div>
