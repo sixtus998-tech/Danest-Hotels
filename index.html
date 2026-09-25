@@ -440,19 +440,31 @@ const FOOT1 = ['about','rooms','facilities','gallery','restaurant'];
 const FOOT2 = ['book','my-booking','faq','contact'];
 
 const ROOMS = [
- {id:'standard', name:'Standard Room', tagline:'Bright, comfortable, and unfussy', price:45000, capacity:2, beds:'1 Queen bed', size:28,
+ {id:'standard', name:'Standard Room', tagline:'Bright, comfortable, and unfussy', price: 22000, capacity:2, beds:'1 Queen bed', size:28,
   amenities:['Free Wi-Fi','Air conditioning','40" flat-screen TV','Work desk','En-suite bathroom','Daily housekeeping'],
   long:'A calm, well-proportioned room for guests who want the essentials done properly. Soft linens, a quiet air conditioning unit, and a desk that actually gets used — the Standard Room is Danest at its most straightforward and dependable.',
   pattern:0},
- {id:'deluxe', name:'Deluxe Room', tagline:'More space, and a view worth waking up to', price:68000, capacity:2, beds:'1 King bed', size:34,
+ {id:'deluxe', name:'Deluxe Room', tagline:'More space, and a view worth waking up to', price:27000, capacity:2, beds:'1 King bed', size:34,
   amenities:['Everything in Standard','City view','Mini bar','Deep soaking tub','24-hour room service','Premium toiletries'],
   long:'Set on the upper floors, Deluxe Rooms trade a little more square footage for a proper city view and a tub worth lingering in. The mini bar is stocked with local favourites, and room service runs around the clock.',
   pattern:1},
- {id:'executive', name:'Executive Room', tagline:'Room to work, unwind, and host', price:95000, capacity:3, beds:'1 King bed + sofa bed', size:42,
+ {id:'executive', name:'Superior Deluxe Room', tagline:'Room to work, unwind, and host', price:95000, capacity:3, beds:'1 King bed + sofa bed', size:42,
   amenities:['Everything in Deluxe','Executive lounge access','Complimentary breakfast','Work lounge area','Priority check-in'],
   long:'Built for the guest juggling meetings and downtime in the same trip. A separate seating area, lounge access with better coffee than the room service menu admits to, and breakfast included every morning of your stay.',
   pattern:2},
- {id:'suite', name:'Danest Suite', tagline:'The full Danest experience, with room to spare', price:150000, capacity:4, beds:'King bed + separate living area', size:60,
+ {id:'suite', name:'Executive Deluxe Room', tagline:'The full Danest experience, with room to spare', price:150000, capacity:4, beds:'King bed + separate living area', size:60,
+  amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
+  long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
+  pattern:3},
+  {id:'suite', name:'Business Room', tagline:'The full Danest experience, with room to spare', price:150000, capacity:4, beds:'King bed + separate living area', size:60,
+  amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
+  long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
+  pattern:3},
+  {id:'suite', name:'Royal Suite', tagline:'The full Danest experience, with room to spare', price:150000, capacity:4, beds:'King bed + separate living area', size:60,
+  amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
+  long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
+  pattern:3},
+  {id:'suite', name:'Apartment', tagline:'The full Danest experience, with room to spare', price:150000, capacity:4, beds:'King bed + separate living area', size:60,
   amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
   long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
   pattern:3},
@@ -657,8 +669,8 @@ function viewHome(){
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <div class="hero-eyebrow">Victoria Island, Lagos</div>
-        <h1>A quiet kind of<br><span class="gold-text">luxury</span>, in the heart of Lagos.</h1>
+        <div class="hero-eyebrow">Mokola Hill, Ibadan</div>
+        <h1>Experience<br><span class="gold-text">A Great Comfort</span> in the heart of Ibadan.</h1>
         <p class="lead">Danest Hotel &amp; Suites pairs considered service with rooms built for rest — book online in minutes, arrive to a room that's actually ready.</p>
         <div class="hero-ctas">
           <a href="#book" class="btn btn-gold">Check availability</a>
