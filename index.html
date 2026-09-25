@@ -435,9 +435,10 @@ const NAVLINKS = [
   {href:'restaurant', label:'Dining'},
   {href:'contact', label:'Contact'},
   {href:'faq', label:'FAQ'},
+  {href:'hotel-policies', label:'Hotel Policies'}
 ];
 const FOOT1 = ['about','rooms','facilities','gallery','restaurant'];
-const FOOT2 = ['book','my-booking','faq','contact'];
+const FOOT2 = ['book','my-booking','faq','contact', 'hotel-policies'];
 
 const ROOMS = [
  {id:'standard', name:'Standard Room', tagline:'Bright, comfortable, and unfussy', price: 22000, capacity:2, beds:'1 Queen bed', size:28,
@@ -1114,6 +1115,57 @@ function submitContact(e){
   e.preventDefault();
   toast('Message sent — the front desk will reply by email shortly.');
   e.target.reset();
+}
+
+function hotelPolicies(){
+  return `
+  <div class="page-head"><div class="container">
+    <div class="crumbs"><a href="#home">Home</a> / Hotel policies</div>
+    <h1>Hotel policies</h1>
+  </div></div>
+  <section class="pad">
+    <div class="container">
+      <div class="policy-list">
+        <div class="policy-intro">
+          These are our hotel policies, kindly go through them Sir/Ma:
+        </div>
+        <div class="policy-item">
+          <h3>Electricity Policy:</h3>
+          <p>From 7:00 a.m. to 7:00 p.m., we will be running on the inverter. During this period, the A.C. and refrigerator will not be in use; however, the fan will remain operational. From 7:00 p.m. to 7:00 a.m. the following morning, the A.C. and refrigerator will be available for use.</p>
+        </div>
+        <div class="policy-item">
+          <h3>External Food & Drinks</h3>
+          <p>External food & drinks are NOT allowed into the hotel premises. We have a kitchen and bar active 24/7.</p>
+        </div>
+        <div class="policy-item">
+          <h3>Smoking Policy</h3>
+          <p>Smoking is NOT allowed in the rooms. IF YOU ARE CAUGHT SMOKING IN THE ROOM, YOU WILL BE CHECKED OUT WITHOUT REFUND.</p>
+        </div>
+        <div class="policy-item">
+          <h3>Pets</h3>
+          <p>Pets are NOT allowed.</p>
+        </div>
+        <div class="policy-item">
+          <h3>Damages</h3>
+          <p>If there is any damage, caused by the guest(s) in the rooms, it will attract a fee determined by the dictates of the manager on duty.</p>
+        </div>
+        <div class="policy-item">
+          <h3>Identification</h3>
+          <p>Kindly bring any valid government-issued ID card with you upon check-in, Sir/Ma.</p>
+        </div>
+        <div class="policy-item">
+          <h3>Check-in/Check-out</h3>
+          <p>Check-in time is 1:00 p.m.; Check-out time is 12:00 p.m. (noon).</p>
+        </div>
+        <div class="policy-item">
+          <h3>Cancellation</h3>
+          <p>Booking cancellation attracts a 30% deduction.</p>
+        </div>
+        <div class="policy-conclusion">THANKS FOR YOUR ANTICIPATED COMPLIANCE, SIR/MA.</div>
+      </div>
+    </div>
+  </section>
+  `;
 }
 
 function viewFaq(){
