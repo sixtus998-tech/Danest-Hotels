@@ -86,6 +86,28 @@ async function createHotelTables() {
             );
         `);
         console.log("🟢 Users table created!");
+
+        // ==========================================
+        // 🌱 NEW: AUTO-POPULATE ROOMS (SEED DATA)
+        // ==========================================
+        const roomCheck = await databaseClient.query("SELECT COUNT(*) FROM rooms;");
+        if (parseInt(roomCheck.rows[0].count) === 0) {
+            console.log("🌱 Database is empty. Inserting default hotel rooms...");
+            
+            await databaseClient.query(`
+                INSERT INTO rooms (room_number, room_type, price_per_night, status) VALUES
+                ('101', 'Standard Business Room', 25000.00, 'Available'),
+                ('102', 'Standard Business Room', 25000.00, 'Available'),
+                ('201', 'Executive Lounge Suite', 45000.00, 'Available'),
+                ('202', 'Executive Lounge Suite', 45000.00, 'Available'),
+                ('301', 'Danest Royal Suite', 85000.00, 'Occupied'),
+                ('302', 'Business Suite', 60000.00, 'Available');
+            `);
+            console.log("✅ Default room inventory successfully loaded!");
+        } else {
+            console.log("ℹ️ Rooms already exist in database, skipping room injection.");
+        }
+
         console.log("✅ All hotel tables created or verified successfully!");
 
     } catch (err) {
