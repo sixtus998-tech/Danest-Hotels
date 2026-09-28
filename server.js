@@ -145,6 +145,21 @@ app.get("/api/rooms/available", async (req, res) => {
 });
 
 // ==========================================
+// 💳 HOTEL BANK TRANSFER DETAILS ENDPOINT
+// ==========================================
+app.get("/api/payment/bank-details", (req, res) => {
+    // This feeds your active corporate bank information to the user's screen
+    res.json({
+        payment_method: "Bank Transfer",
+        bank_name: "Zenith Bank PLC", // Replace with your actual bank
+        account_name: "Danest Hotel and Suites Limited",
+        account_number: "8100003231", // Replace with your corporate account
+        instructions: "Please use your Booking Code as the transfer narration/memo. Send your proof of payment receipt to accounts@danestpms.com for swift approval."
+    });
+});
+
+
+// ==========================================
 // 🔌 2. SINGLE DATABASE & SERVER STARTUP BLOCK
 // ==========================================
 databaseClient.connect()
