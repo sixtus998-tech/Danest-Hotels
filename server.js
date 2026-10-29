@@ -1,3 +1,4 @@
+require("dotenv").config(); // loads ADMIN_KEY (and anything else) from the .env file
 const express = require("express");
 const app = express();
 
@@ -108,6 +109,21 @@ async function createHotelTables() {
             console.log("ℹ️ Rooms already exist in database, skipping room injection.");
         }
 
+        // 6. Settings table (hotel-wide switches such as VAT)
+        await databaseClient.query(`
+            CREATE TABLE IF NOT EXISTS settings (
+                key VARCHAR(50) PRIMARY KEY,
+                value VARCHAR(100) NOT NULL
+            );
+        `);
+        await databaseClient.query(`
+            INSERT INTO settings (key, value) VALUES ('vat_enabled', 'true'), ('vat_rate', '7.5')
+            ON CONFLICT (key) DO NOTHING;
+        `);
+        // Record the VAT charged on each booking so later rate/toggle changes never alter old bookings
+        await databaseClient.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS vat_amount DECIMAL(10,2) DEFAULT 0;`);
+        console.log("🟢 Settings table ready (VAT default: ON at 7.5%)");
+
         console.log("✅ All hotel tables created or verified successfully!");
 
     } catch (err) {
@@ -159,6 +175,59 @@ app.get("/api/payment/bank-details", (req, res) => {
 });
 
 
+
+// ==========================================
+// 🧾 VAT SETTINGS (read by the website, changed by the hotel owner)
+// ==========================================
+// CORS so the website can read/change the setting even if it is served from another port
+app.use("/api/settings", (req, res, next) => {
+    res.set({
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type, x-admin-key",
+        "Access-Control-Allow-Methods": "GET, PUT, OPTIONS"
+    });
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    next();
+});
+
+async function readVat() {
+    const r = await databaseClient.query("SELECT key, value FROM settings WHERE key IN ('vat_enabled','vat_rate')");
+    const m = Object.fromEntries(r.rows.map(x => [x.key, x.value]));
+    return { enabled: m.vat_enabled !== "false", rate: parseFloat(m.vat_rate) || 7.5 };
+}
+
+// Public: the booking site asks this before pricing a stay
+app.get("/api/settings/vat", async (req, res) => {
+    try {
+        res.json(await readVat());
+    } catch (err) {
+        console.error("❌ Error reading VAT setting:", err.message);
+        res.status(500).json({ error: "Could not read VAT setting" });
+    }
+});
+
+// Admin only: turn VAT on/off. Set ADMIN_KEY in your environment before starting the server
+// (e.g.  ADMIN_KEY=choose-a-long-secret node server.js). Replace with real admin login later.
+app.put("/api/settings/vat", async (req, res) => {
+    try {
+        if (!process.env.ADMIN_KEY || req.get("x-admin-key") !== process.env.ADMIN_KEY) {
+            return res.status(403).json({ error: "Not authorised to change VAT settings" });
+        }
+        const { enabled } = req.body;
+        if (typeof enabled !== "boolean") {
+            return res.status(400).json({ error: "'enabled' must be true or false" });
+        }
+        await databaseClient.query(
+            "INSERT INTO settings (key, value) VALUES ('vat_enabled', $1) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value",
+            [String(enabled)]
+        );
+        res.json(await readVat());
+    } catch (err) {
+        console.error("❌ Error updating VAT setting:", err.message);
+        res.status(500).json({ error: "Could not update VAT setting" });
+    }
+});
+
 // ==========================================
 // 🔌 2. SINGLE DATABASE & SERVER STARTUP BLOCK
 // ==========================================
@@ -172,6 +241,9 @@ databaseClient.connect()
         // Start your server only after a successful database connection
         app.listen(3000, () => {
             console.log("🚀 Server running perfectly on http://localhost:3000");
+            if (!process.env.ADMIN_KEY) {
+                console.warn("⚠️  ADMIN_KEY is not set — the VAT on/off switch in the admin portal will be refused. Add it to your .env file.");
+            }
         });
     })
     .catch(err => {

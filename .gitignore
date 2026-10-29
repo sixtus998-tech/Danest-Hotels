@@ -1,0 +1,3 @@
+# never upload secrets or installed packages
+.env
+node_modules/

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fitness Centre — Danest Hotel &amp; Suites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --gold-50:#FBF3D9;
+  --gold-100:#F6E7B0;
+  --gold-300:#E8C766;
+  --gold-500:#D4AF37;
+  --gold-600:#C9A227;
+  --gold-700:#B8912A;
+  --gold-gradient:linear-gradient(115deg,var(--gold-600) 0%,var(--gold-100) 24%,var(--gold-300) 45%,var(--gold-50) 58%,var(--gold-600) 80%,var(--gold-300) 100%);
+  --ink:#241F16;
+  --ink-soft:#5B5340;
+  --ink-faint:#8A8168;
+  --paper:#FFFFFF;
+  --paper-warm:#FBF9F4;
+  --paper-sunk:#F5F1E6;
+  --line:rgba(36,31,22,0.12);
+  --line-strong:rgba(36,31,22,0.22);
+  --danger:#9A3B2E;
+  --success:#3B6B3E;
+  --shadow-gold:0 10px 30px -12px rgba(201,162,39,0.45);
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --ink:#F3ECDA;
+    --ink-soft:#D6C9A8;
+    --ink-faint:#A99B78;
+    --paper:#18140E;
+    --paper-warm:#1F1A12;
+    --paper-sunk:#241E14;
+    --line:rgba(246,231,176,0.16);
+    --line-strong:rgba(246,231,176,0.28);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F3ECDA;
+  --ink-soft:#D6C9A8;
+  --ink-faint:#A99B78;
+  --paper:#18140E;
+  --paper-warm:#1F1A12;
+  --paper-sunk:#241E14;
+  --line:rgba(246,231,176,0.16);
+  --line-strong:rgba(246,231,176,0.28);
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(88px + env(safe-area-inset-top,0px));overflow-x:hidden;}
+*,*::before,*::after{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Manrope',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  min-height:100%;
+  line-height:1.6;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  margin:0 0 .5em;
+  line-height:1.15;
+  color:var(--ink);
+}
+p{margin:0 0 1em;color:var(--ink-soft);max-width:62ch;}
+a{color:inherit;text-decoration:none;}
+img,svg{display:block;max-width:100%;}
+button,input,select,textarea{font-family:inherit;font-size:1rem;color:var(--ink);}
+.container{max-width:1180px;margin:0 auto;padding-bottom: 10px; padding-left: 24px; padding-right: 24px;}
+.serif{font-family:'Fraunces',serif;}
+.gold-text{
+  background:var(--gold-gradient);
+  background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce){ .gold-text{animation:none;} }
+@keyframes shine{0%{background-position:0% 0;}100%{background-position:220% 0;}}
+.rule{height:1px;background:var(--gold-gradient);background-size:220% 100%;border:0;opacity:.9;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 28px;border-radius:2px;border:1px solid transparent;
+  font-weight:600;font-size:.92rem;letter-spacing:.01em;cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(.98);}
+.btn-gold{background:var(--gold-gradient);background-size:220% 100%;color:var(--ink);box-shadow:var(--shadow-gold);}
+.btn-gold:hover{background-position:100% 0;}
+.btn-outline{background:transparent;border-color:var(--line-strong);color:var(--ink);}
+.btn-outline:hover{border-color:var(--gold-600);}
+.btn-dark{background:var(--ink);color:var(--paper);}
+.btn-dark:hover{opacity:.88;}
+.btn-block{width:100%;}
+.btn[disabled]{opacity:.5;cursor:not-allowed;}
+.btn-sm{padding:9px 18px;font-size:.82rem;}
+
+/* header */
+header{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top,0px);
+  transform:translateZ(0);
+}
+.nav-row{display:flex;align-items:center;justify-content:space-between;height:76px;gap:16px;}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer;flex:none;}
+.brand-logo{width:34px;height:34px;flex:none;}
+.brand-name{font-family:'Fraunces',serif;font-size:1.18rem;font-weight:600;letter-spacing:.02em;white-space:nowrap;}
+.brand-name small{display:block;font-family:'Manrope',sans-serif;font-weight:500;font-size:.6rem;letter-spacing:.16em;color:var(--gold-700);margin-top:1px;}
+nav.links{display:flex;align-items:center;gap:22px;flex-wrap:nowrap;min-width:0;}
+nav.links a{font-size:.86rem;font-weight:600;color:var(--ink-soft);padding:6px 1px;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap;}
+nav.links a:hover{color:var(--ink);}
+nav.links a.active{color:var(--ink);border-bottom-color:var(--gold-600);}
+.nav-actions{display:flex;align-items:center;gap:14px;flex:none;}
+.nav-utility{display:flex;align-items:center;gap:10px;}
+.nav-utility a{font-size:.8rem;font-weight:600;color:var(--ink-faint);white-space:nowrap;}
+.nav-utility a:hover{color:var(--gold-700);}
+.nav-utility .divider{width:1px;height:14px;background:var(--line-strong);}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--ink);}
+.mobile-menu{display:none;flex-direction:column;gap:2px;background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:76px;z-index:59;max-height:calc(100vh - 76px);overflow-y:auto;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:14px 24px;font-weight:600;font-size:.95rem;border-bottom:1px solid var(--line);color:var(--ink-soft);}
+.mobile-menu a.active{color:var(--gold-700);}
+.mobile-menu a.mm-utility{color:var(--ink-faint);font-size:.85rem;}
+.nav-dropdown{position:relative;}
+.nav-dropdown>button{
+  display:flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:.86rem;font-weight:600;color:var(--ink-soft);
+  padding:6px 1px;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;
+}
+.nav-dropdown>button:hover,.nav-dropdown>button.active{color:var(--ink);}
+.nav-dropdown>button.active{border-bottom-color:var(--gold-600);}
+.nav-dropdown>button svg{transition:transform .15s ease;}
+.nav-dropdown.open>button svg{transform:rotate(180deg);}
+.nav-dropdown-menu{
+  display:none;position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
+  min-width:180px;background:var(--paper);border:1px solid var(--line);
+  box-shadow:0 24px 50px -24px rgba(36,31,22,.32);padding:6px;z-index:70;
+}
+.nav-dropdown.open .nav-dropdown-menu{display:block;}
+.nav-dropdown-menu a{display:block;padding:10px 14px;font-size:.86rem;font-weight:600;color:var(--ink-soft);}
+.nav-dropdown-menu a:hover{background:var(--paper-warm);color:var(--ink);}
+.nav-dropdown-menu a.active{color:var(--gold-700);}
+.mm-services-toggle{
+  width:100%;text-align:left;background:none;border:none;cursor:pointer;font-family:inherit;
+  padding:14px 24px;font-weight:600;font-size:.95rem;color:var(--ink-soft);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mm-services.active .mm-services-toggle{color:var(--gold-700);}
+.mm-services-toggle svg{transition:transform .15s ease;}
+.mm-services.open .mm-services-toggle svg{transform:rotate(180deg);}
+.mm-services-list{display:none;background:var(--paper-warm);}
+.mm-services.open .mm-services-list{display:block;}
+.mm-services-list a{display:block;padding:12px 24px 12px 40px;font-size:.9rem;font-weight:600;color:var(--ink-soft);border-bottom:1px solid var(--line);}
+.mm-services-list a.active{color:var(--gold-700);}
+/* medium widths: thin out the header before it has room to wrap/bunch */
+/* 9 nav links no longer fit beside the utility links, so utility links live in the
+   footer + mobile menu, and the menu collapses to the hamburger before links can collide */
+.nav-utility{display:none;}
+@media (max-width:1240px){
+  nav.links{gap:16px;}
+}
+@media (max-width:1120px){
+  nav.links,.nav-actions .btn-outline{display:none;}
+  .hamburger{display:block;}
+}
+/* kill the expensive blur on small screens — Android Chrome repaints it on every
+   scroll frame, which is what makes a sticky header appear to lag/un-stick */
+@media (max-width:1120px), (prefers-reduced-motion: reduce){
+  header{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--paper);}
+}
+
+/* hero */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(212,175,55,.16), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(212,175,55,.12), transparent 55%),
+    var(--paper-warm);
+  padding:88px 0 96px;
+  border-bottom:1px solid var(--line);
+}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+.hero-eyebrow{font-size:.82rem;color:var(--gold-700);font-weight:700;margin-bottom:18px;letter-spacing:.01em;}
+.hero h1{font-size:clamp(2.4rem,5vw,3.6rem);letter-spacing:-.01em;}
+.hero p.lead{font-size:1.08rem;max-width:46ch;margin-bottom:28px;}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap;}
+.hero-stat b{display:block;font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;}
+.hero-stat span{font-size:.8rem;color:var(--ink-faint);}
+.hero-art{position:relative;aspect-ratio:4/5;border-radius:2px;overflow:hidden;border:1px solid var(--line-strong);}
+.art-frame{position:relative;width:100%;height:100%;}
+.art-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+
+/* quick search bar */
+.searchbar{
+  background:var(--paper);border:1px solid var(--line-strong);border-radius:4px;
+  box-shadow:0 24px 50px -24px rgba(36,31,22,.28);
+  display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:0;overflow:hidden;
+  margin-top:-40px;position:relative;z-index:5;
+}
+@media (max-width:760px){.searchbar{grid-template-columns:1fr 1fr;}}
+.sb-field{padding:16px 20px;border-right:1px solid var(--line);}
+.sb-field:last-of-type{border-right:none;}
+.sb-field label{display:block;font-size:.72rem;font-weight:700;color:var(--ink-faint);margin-bottom:6px;letter-spacing:.02em;}
+.sb-field input,.sb-field select{border:none;outline:none;background:none;width:100%;font-weight:600;font-size:.95rem;padding:0;}
+.sb-submit{display:flex;align-items:stretch;}
+.sb-submit .btn{border-radius:0;height:100%;width:100%;}
+
+/* sections */
+section.pad{padding:88px 0;}
+section.pad.tight{padding:64px 0;}
+.section-head{max-width:640px;margin-bottom:48px;}
+.section-head h2{font-size:clamp(1.7rem,3.2vw,2.4rem);}
+.bg-warm{background:var(--paper-warm);}
+.bg-sunk{background:var(--paper-sunk);}
+.bg-ink{background:var(--ink);color:var(--paper);}
+.bg-ink p{color:color-mix(in srgb, var(--paper) 72%, transparent);}
+.bg-ink h2,.bg-ink h3{color:var(--paper);}
+
+/* rooms */
+.rooms-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;}
+@media (max-width:760px){.rooms-grid{grid-template-columns:1fr;}}
+.room-card{border:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;transition:border-color .2s, box-shadow .2s;}
+.room-card:hover{border-color:var(--gold-500);box-shadow:0 20px 40px -28px rgba(36,31,22,.35);}
+.room-art{aspect-ratio:16/10;position:relative;overflow:hidden;border-bottom:1px solid var(--line);}
+.room-body{padding:24px;display:flex;flex-direction:column;gap:12px;flex:1;}
+.room-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+.room-top h3{font-size:1.25rem;margin:0;}
+.room-price{text-align:right;white-space:nowrap;}
+.room-price b{font-family:'Fraunces',serif;font-size:1.15rem;}
+.room-price span{display:block;font-size:.72rem;color:var(--ink-faint);}
+.room-meta{display:flex;gap:16px;font-size:.82rem;color:var(--ink-faint);flex-wrap:wrap;}
+.room-meta span{display:flex;align-items:center;gap:6px;}
+.room-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+.tag{font-size:.72rem;font-weight:600;padding:5px 10px;border:1px solid var(--line-strong);color:var(--ink-soft);}
+.room-actions{display:flex;gap:10px;margin-top:auto;padding-top:8px;}
+
+/* facilities */
+.fac-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+@media (max-width:900px){.fac-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:560px){.fac-grid{grid-template-columns:repeat(2,1fr);}}
+.fac-item{background:var(--paper);padding:28px 20px;text-align:center;}
+.fac-item svg{margin:0 auto 14px;color:var(--gold-600);}
+.fac-item h4{font-size:.92rem;font-family:'Manrope',sans-serif;font-weight:700;margin-bottom:4px;}
+.fac-item p{font-size:.78rem;margin:0;color:var(--ink-faint);}
+
+/* gallery */
+#gallery{text-align:center;padding:32px 0;}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:6px;}
+.gallery-grid .g1{grid-column:span 2;grid-row:span 2;}
+@media (max-width:760px){.gallery-grid{grid-template-columns:repeat(2,1fr);}.gallery-grid .g1{grid-column:span 2;grid-row:span 1;}}
+.gallery-item{position:relative;overflow:hidden;}
+.gallery-item span{position:absolute;bottom:10px;left:12px;color:#fff;font-size:.76rem;font-weight:600;letter-spacing:.02em;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.video-container{display: flex;flex-wrap:wrap;gap:20px; margin-top: 30px;}
+
+/* testimonials */
+.quote-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+@media (max-width:860px){.quote-strip{grid-template-columns:1fr;}}
+.quote-card{background:var(--paper);padding:32px 28px;}
+.quote-card p{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--ink);font-weight:400;font-style:italic;}
+.quote-by{font-size:.8rem;color:var(--ink-faint);font-weight:600;font-style:normal;}
+
+/* footer */
+footer{background:var(--ink);color:var(--paper-sunk);padding:64px 0 28px;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));overflow:hidden;}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;}
+.foot-grid > div{min-width:0;}
+@media (max-width:760px){.foot-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:520px){.foot-grid{grid-template-columns:1fr;}}
+footer h4{color:var(--paper);font-family:'Manrope',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.03em;margin-bottom:14px;}
+footer a,footer p{color:color-mix(in srgb, var(--paper) 62%, transparent);font-size:.88rem;overflow-wrap:anywhere;}
+footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
+footer li{overflow-wrap:anywhere;}
+footer a:hover{color:var(--gold-300);}
+.foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.78rem;color:color-mix(in srgb, var(--paper) 45%, transparent);}
+.social-row{display:flex;gap:10px;}
+.social-row a{width:34px;height:34px;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;border-radius:50%;}
+.social-row a:hover{border-color:var(--gold-500);}
+
+/* generic page header (non-home routes) */
+.page-head{padding:64px 0 48px;border-bottom:1px solid var(--line);background:var(--paper-warm);}
+.page-head .crumbs{font-size:.78rem;color:var(--ink-faint);margin-bottom:14px;}
+.page-head .crumbs a:hover{color:var(--gold-700);}
+.page-head h1{font-size:clamp(2rem,4vw,2.8rem);}
+
+/* two col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+@media (max-width:860px){.two-col{grid-template-columns:1fr;}}
+.stat-row{display:flex;gap:36px;margin-top:20px;flex-wrap:wrap;}
+.stat-row div b{display:block;font-family:'Fraunces',serif;font-size:1.7rem;}
+.stat-row div span{font-size:.78rem;color:var(--ink-faint);}
+.value-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+.value-list li{display:flex;gap:14px;align-items:flex-start;}
+.value-list svg{flex:none;color:var(--gold-600);margin-top:3px;}
+
+/* facilities detail cards on facilities page */
+.fac-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+@media (max-width:860px){.fac-detail-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.fac-detail-grid{grid-template-columns:1fr;}}
+.fac-detail{border:1px solid var(--line);padding:26px;}
+.fac-detail svg{color:var(--gold-600);margin-bottom:14px;}
+.fac-detail h3{font-size:1.05rem;font-family:'Manrope',sans-serif;font-weight:700;}
+.fac-detail p{font-size:.88rem;margin:0;}
+
+/* faq */
+.faq-list{max-width:760px;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:20px 4px;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;font-weight:600;font-size:1rem;color:var(--ink);}
+.faq-q svg{flex:none;transition:transform .2s ease;color:var(--gold-600);}
+.faq-item.open .faq-q svg{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.faq-item.open .faq-a{max-height:400px;}
+.faq-a p{padding:0 4px 20px;}
+
+/* forms */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px;}
+.field label{font-size:.82rem;font-weight:700;color:var(--ink-soft);}
+.field input,.field select,.field textarea{
+  border:1px solid var(--line-strong);padding:12px 14px;background:var(--paper);border-radius:2px;
+  outline:none;transition:border-color .15s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold-600);}
+.field textarea{resize:vertical;min-height:90px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media (max-width:560px){.field-row{grid-template-columns:1fr;}}
+.field-error{font-size:.78rem;color:var(--danger);}
+.field.has-error input,.field.has-error select,.field.has-error textarea{border-color:var(--danger);}
+
+/* booking */
+.steps-bar{display:flex;gap:0;margin-bottom:44px;max-width:640px;}
+.step-pill{flex:1;text-align:center;padding-bottom:12px;border-bottom:3px solid var(--line);font-size:.78rem;font-weight:700;color:var(--ink-faint);position:relative;}
+.step-pill.active{border-color:var(--gold-600);color:var(--ink);}
+.step-pill.done{border-color:var(--gold-300);color:var(--ink-soft);}
+.card{border:1px solid var(--line);background:var(--paper);padding:28px;}
+.result-room{display:flex;gap:20px;border:1px solid var(--line);padding:18px;margin-bottom:14px;align-items:center;}
+@media (max-width:640px){.result-room{flex-direction:column;align-items:stretch;}}
+.result-thumb{width:120px;height:88px;flex:none;overflow:hidden;position:relative;}
+@media (max-width:640px){.result-thumb{width:100%;height:140px;}}
+.result-info{flex:1;}
+.result-info h4{margin:0 0 4px;font-size:1.05rem;}
+.result-info p{margin:0;font-size:.84rem;}
+.result-price{text-align:right;flex:none;}
+@media (max-width:640px){.result-price{text-align:left;display:flex;justify-content:space-between;align-items:center;}}
+.result-price b{font-family:'Fraunces',serif;font-size:1.2rem;display:block;}
+.result-price span{font-size:.74rem;color:var(--ink-faint);}
+.summary-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:.92rem;}
+.summary-row.total{border-bottom:none;padding-top:16px;font-weight:700;font-size:1.1rem;}
+.summary-row span:first-child{color:var(--ink-soft);}
+.pay-option{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line-strong);padding:16px;margin-bottom:10px;cursor:pointer;}
+.pay-option.selected{border-color:var(--gold-600);background:var(--paper-warm);}
+.pay-option input{margin-top:3px;}
+.pay-option strong{display:block;font-size:.92rem;}
+.pay-option p{margin:2px 0 0;font-size:.8rem;}
+.bank-box{border:1px solid var(--gold-600);background:var(--paper-warm);padding:18px 20px;margin-top:14px;}
+.bank-box h4{font-family:'Manrope',sans-serif;font-size:.85rem;font-weight:700;margin:0 0 6px;}
+.bank-box .summary-row{gap:16px;}
+.bank-box .summary-row span:last-child{text-align:right;overflow-wrap:anywhere;}
+.bank-box .acct{font-family:'Fraunces',serif;font-size:1.05rem;letter-spacing:.04em;}
+.bank-note{font-size:.8rem;margin:10px 0 0;}
+.copy-btn{margin-left:8px;background:none;border:1px solid var(--line-strong);padding:2px 10px;font-size:.72rem;font-weight:700;cursor:pointer;}
+.copy-btn:hover{border-color:var(--gold-600);}
+.confirm-box{text-align:center;padding:48px 20px;}
+.confirm-ref{font-family:'Fraunces',serif;font-size:2rem;letter-spacing:.04em;margin:18px 0;color:var(--gold-700);}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%);background:var(--ink);color:var(--paper);padding:14px 22px;border-radius:2px;font-size:.86rem;font-weight:600;z-index:200;transition:transform .3s ease;box-shadow:0 12px 30px rgba(0,0,0,.3);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.booking-lookup-result{border:1px solid var(--line);padding:24px;margin-top:24px;}
+.status-pill{display:inline-block;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;}
+.status-confirmed{background:color-mix(in srgb, var(--success) 15%, transparent);color:var(--success);}
+.status-cancelled{background:color-mix(in srgb, var(--danger) 15%, transparent);color:var(--danger);}
+.icon-btn{background:none;border:1px solid var(--line-strong);width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;}
+.icon-btn:hover{border-color:var(--gold-600);}
+.map-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.map-tab{background:transparent;border:1px solid var(--line-strong);padding:10px 18px;font-weight:600;font-size:.86rem;cursor:pointer;color:var(--ink-soft);transition:border-color .15s;}
+.map-tab:hover{border-color:var(--gold-600);}
+.map-tab.active{background:var(--gold-gradient);background-size:220% 100%;border-color:var(--gold-600);color:var(--ink);}
+.map-frame{position:relative;aspect-ratio:16/7;min-height:320px;border:1px solid var(--line-strong);background:var(--paper-sunk);}
+.map-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+@media (max-width:640px){.map-frame{aspect-ratio:auto;height:340px;}}
+.map-meta{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px;}
+.map-meta p{margin:0;display:flex;gap:8px;align-items:flex-start;}
+.map-meta p svg{flex:none;color:var(--gold-600);margin-top:3px;}
+.map-actions{display:flex;gap:10px;flex-wrap:wrap;}
+::selection{background:var(--gold-300);color:var(--ink);}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+a.skip-link{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:10px 16px;z-index:300;}
+a.skip-link:focus{left:12px;top:12px;}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<header>
+  <div class="container nav-row">
+    <a class="brand" href="index.html" aria-label="Danest Hotel and Suites, go to home">
+        <img class="brand-logo" src="danest-hotels-logo.jpg" alt="Danest Hotels & Suites Logo">
+        <div class="brand-name">Danest <span>Hotel &amp; Suites</span></div>
+    </a>
+    <nav class="links" aria-label="Primary"><a href="index.html">Home</a><a href="index.html#about">About</a><a href="index.html#rooms">Rooms</a><a href="index.html#facilities">Facilities</a><a href="index.html#gallery">Gallery</a><a href="index.html#restaurant">Dining</a><a href="index.html#contact">Contact</a><a href="index.html#faq">FAQ</a><a href="index.html#hotel-policies">Hotel Policies</a><div class="nav-dropdown" id="servicesDropdown">
+        <button type="button" class="active" aria-haspopup="true" aria-expanded="false" onclick="toggleServicesDropdown(event)">Our Services <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="nav-dropdown-menu" role="menu"><a href="index.html#restaurant" role="menuitem" class="">Restaurant</a><a href="spa.html" role="menuitem" class="">Spa</a><a href="gym.html" role="menuitem" class="active">Gym</a><a href="mini-mart.html" role="menuitem" class="">Mini Mart</a><a href="bar.html" role="menuitem" class="">Bar</a></div>
+      </div></nav>
+    <div class="nav-actions">
+      <div class="nav-utility">
+        <a href="index.html#my-booking">Manage booking</a>
+        <span class="divider" aria-hidden="true"></span>
+        <a href="admin_portal.html">Admin</a>
+      </div>
+      <a class="btn btn-gold btn-sm" href="index.html#book">Book now</a>
+      <button class="hamburger" aria-label="Open menu" onclick="toggleMobileMenu()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu"><a href="index.html" onclick="toggleMobileMenu()">Home</a><a href="index.html#about" onclick="toggleMobileMenu()">About</a><a href="index.html#rooms" onclick="toggleMobileMenu()">Rooms</a><a href="index.html#facilities" onclick="toggleMobileMenu()">Facilities</a><a href="index.html#gallery" onclick="toggleMobileMenu()">Gallery</a><a href="index.html#restaurant" onclick="toggleMobileMenu()">Dining</a><a href="index.html#contact" onclick="toggleMobileMenu()">Contact</a><a href="index.html#faq" onclick="toggleMobileMenu()">FAQ</a><a href="index.html#hotel-policies" onclick="toggleMobileMenu()">Hotel Policies</a><div class="mm-services active open">
+        <button type="button" class="mm-services-toggle" onclick="this.parentElement.classList.toggle('open')">Our Services <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="mm-services-list"><a href="index.html#restaurant" class="">Restaurant</a><a href="spa.html" class="">Spa</a><a href="gym.html" class="active">Gym</a><a href="mini-mart.html" class="">Mini Mart</a><a href="bar.html" class="">Bar</a></div>
+      </div><a href="index.html#book" onclick="toggleMobileMenu()">Book now</a><a class="mm-utility" href="index.html#my-booking" onclick="toggleMobileMenu()">Manage booking</a><a class="mm-utility" href="admin_portal.html">Admin</a></div>
+</header>
+
+<main id="main">
+  <div class="page-head"><div class="container">
+    <div class="crumbs"><a href="index.html">Home</a> / Our Services / Gym</div>
+    <h1>Fitness Centre</h1>
+    <p style="margin-top:10px;">Open early and equipped properly, for guests who don't want their routine to pause on the road.</p>
+  </div></div>
+  <section class="pad">
+    <div class="container two-col">
+      <div>
+        <h2>Hours</h2>
+        <ul class="value-list"><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><strong>Every day</strong><p style="margin:2px 0 0;">5:00 AM &ndash; 10:00 PM</p></div></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><strong>Access</strong><p style="margin:2px 0 0;">Free for all registered guests; present your room key at the door.</p></div></li><li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><strong>Personal training</strong><p style="margin:2px 0 0;">Available on request, subject to trainer availability.</p></div></li></ul>
+        <a href="index.html#contact" class="btn btn-outline" style="margin-top:8px;">Ask about personal training</a>
+      </div>
+      <div class="hero-art" style="aspect-ratio:4/5;">
+        <div class="art-frame" style="height:100%;">
+          <img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7hc-8WTTqqhHZAWhjj2wchI6Shd5L8_B5FBSORht9SfNvzor22Bt-EoJz9f-ExhSVdFgnCiWYFoQN6n0ZU6gsbqrdSj43BXfiBxB2SkNYh_QNOhY2LicAOfEG69w5gNlXiXc1=w253-h168-k-no" alt="A guest using the Barbells in the Danest Hotel & Suites fitness centre">
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="pad bg-warm">
+    <div class="container">
+      <div class="section-head"><h2>Equipment</h2><p>A compact but complete set-up, rarely crowded.</p></div>
+      <div class="fac-detail-grid"><div class="fac-detail"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6M20 9v6M7 7v10M17 7v10M2 12h3M19 12h3M7 12h10"/></svg><h3>Free weights</h3><p>Dumbbells, a barbell rack, and a bench, for guests who prefer to work outside the machines.</p></div><div class="fac-detail"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6M20 9v6M7 7v10M17 7v10M2 12h3M19 12h3M7 12h10"/></svg><h3>Cardio machines</h3><p>Treadmills, an elliptical, and a stationary bike, each with a personal screen.</p></div><div class="fac-detail"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6M20 9v6M7 7v10M17 7v10M2 12h3M19 12h3M7 12h10"/></svg><h3>Resistance machines</h3><p>A small circuit covering the major muscle groups, suited to a quick session before breakfast.</p></div></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="brand-name" style="color:#fff;margin-bottom:12px;">Danest <span style="color:#C9A227">Hotel &amp; Suites</span></div>
+        <p style="max-width:32ch;">A quiet, gold-trimmed retreat in the heart of Ibadan — considered service, comfortable rooms, and a table worth returning to.</p>
+        <div class="social-row" style="margin-top:16px;">
+          <a href="https://instagram.com/danestsuitesibadan?stkn=ZnNsNXVIbWRzMzY1&utm_source=qr" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+          <a href="https://www.facebook.com/danesthotelandsuite" aria-label="Facebook" onclick="return true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 9h3V6h-3c-2 0-3 1.2-3 3v2H8v3h3v7h3v-7h3l1-3h-4v-1.5c0-.6.3-1.5 1-1.5Z"/></svg></a>
+          <a href="https://www.tiktok.com/@danesthotelibadan?_r=1&_t=ZS-9A1tiRfKrLD" aria-label="TikTok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" /></svg></a>
+          <a href="https://wa.me/2348100003231" aria-label="WhatsApp" onclick="return true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l1.3-3.8A8 8 0 1 1 8.8 19L4 20Z"/><path d="M8.5 9.5c0 3.5 2.5 6 6 6"/></svg></a>
+        </div>
+        <ul><li><a href="index.html#about">About</a></li><li><a href="index.html#rooms">Rooms</a></li><li><a href="index.html#facilities">Facilities</a></li><li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#restaurant">Dining</a></li></ul>
+      </div>
+      <div>
+        <h4>Guests</h4>
+        <ul><li><a href="index.html#book">Book a room</a></li><li><a href="index.html#my-booking">Manage my booking</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="index.html#contact">Contact us</a></li><li><a href="admin_portal.html">Admin</a></li></ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Danest 1: No. 4 Beckley Street, Off Adeyi Street, Old Bodija, Ibadan, Oyo State, Nigeria.</li>
+          <li>Danest 2: No. 47, Adeyi Avenue, Off Awolowo Road, Old Bodija, Ibadan, Oyo State, Nigeria.</li>
+          <li><a href="tel:+2348001234567">+234 800 123 4567</a></li>
+          <li><a href="mailto:danesthotelandsuites123@gmail.com">danesthotelandsuites123@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span id="yr"></span> Danest Hotel &amp; Suites. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+let mobileOpen = false;
+function toggleMobileMenu(){
+  mobileOpen = !mobileOpen;
+  document.getElementById('mobileMenu').classList.toggle('open', mobileOpen);
+}
+function closeServicesDropdown(){
+  const dd = document.getElementById('servicesDropdown');
+  if(!dd) return;
+  dd.classList.remove('open');
+  dd.querySelector('button').setAttribute('aria-expanded','false');
+}
+function toggleServicesDropdown(e){
+  e.stopPropagation();
+  const dd = document.getElementById('servicesDropdown');
+  const open = dd.classList.toggle('open');
+  dd.querySelector('button').setAttribute('aria-expanded', String(open));
+}
+document.addEventListener('click', closeServicesDropdown);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeServicesDropdown(); });
+</script>
+</body>
+</html>

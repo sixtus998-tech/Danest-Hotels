@@ -346,6 +346,35 @@
     color: var(--ink-soft);
   }
 
+  .pw-wrap{ position: relative; }
+  .pw-wrap input{ padding-right: 48px; }
+  .pw-toggle{
+    position: absolute; top: 50%; right: 6px; transform: translateY(-50%);
+    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+    background: none; border: none; cursor: pointer; color: var(--ink-soft);
+  }
+  .pw-toggle:hover{ color: var(--ink); }
+  .pw-toggle:focus-visible{ outline: 2px solid var(--ink-soft); outline-offset: 1px; }
+  .vat-switch{
+    position: relative; width: 60px; height: 32px; flex: none; padding: 0; cursor: pointer;
+    border: 1px solid var(--gold-700); border-radius: 32px; background: var(--paper-sunk);
+    transition: background .2s;
+  }
+  .vat-switch::after{
+    content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--paper); box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .2s;
+  }
+  .vat-switch[aria-checked="true"]{ background: var(--gold-700); }
+  .vat-switch[aria-checked="true"]::after{ transform: translateX(28px); }
+  .vat-switch:focus-visible{ outline: 2px solid var(--ink-soft); outline-offset: 2px; }
+  .vat-switch:disabled{ opacity: .5; cursor: wait; }
+  .vat-pill{
+    display: inline-block; font-family: 'Manrope',sans-serif; font-size: 11px; font-weight: 700;
+    padding: 2px 10px; border-radius: 20px; margin-left: 8px; vertical-align: middle;
+    background: var(--paper); color: var(--success);
+  }
+  .vat-pill.off{ color: var(--danger); }
+
   .chart-wrap{ height: 260px; }
 
   /* Division table */
@@ -564,6 +593,7 @@
       <button data-view="reservations">Reservations</button>
       <button data-view="add-entry">Add entry</button>
       <button data-view="log">Transaction log</button>
+      <button data-view="settings">Settings</button>
     </nav>
     <div class="sidebar-footer">
       <div class="staff-chip">Signed in as <strong id="staff-name-display"></strong><span class="role">Staff account</span></div>
@@ -821,6 +851,36 @@
       <div class="empty-state" id="log-empty" style="display:none;">No transactions match these filters yet.</div>
     </section>
 
+    <!-- ---------- SETTINGS ---------- -->
+    <section class="view" id="view-settings">
+      <div class="view-header">
+        <div>
+          <h2>Settings</h2>
+          <div class="view-sub">Hotel-wide switches that apply to the booking website and walk-in bookings</div>
+        </div>
+      </div>
+
+      <div class="panel" style="max-width:620px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:18px;">
+          <div>
+            <h3 style="margin-bottom:4px;">Charge VAT on bookings <span class="vat-pill" id="vat-pill">ON</span></h3>
+            <div style="font-size:13px;" id="vat-rate-text">Rate: 7.5%</div>
+          </div>
+          <button type="button" class="vat-switch" id="vat-switch" role="switch" aria-checked="true" aria-label="Charge VAT on bookings"></button>
+        </div>
+        <div style="font-size:13px; margin-top:14px;">When on, VAT is added to every new booking (website and walk-in) and shown to the guest as its own line. Bookings already made keep the VAT they were charged.</div>
+
+        <div class="field-block" style="margin-top:20px;">
+          <label for="vat-admin-key">Admin key</label>
+          <div class="pw-wrap">
+            <input id="vat-admin-key" type="password" autocomplete="off" placeholder="The ADMIN_KEY the server was started with">
+            <button type="button" class="pw-toggle" id="vat-key-toggle" aria-label="Show admin key" aria-pressed="false"><svg class="ico-eye" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ico-eye-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6C3.7 8.4 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button>
+          </div>
+        </div>
+        <div class="form-status" id="vat-status" role="status" aria-live="polite" style="margin-top:12px; display:block;"></div>
+      </div>
+    </section>
+
   </main>
 </div>
 
@@ -881,6 +941,106 @@
   function uid(){
     return 'tx_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
   }
+
+  // ---------- VAT ----------
+  // The website reads the SAME setting (GET /api/settings/vat), so switching it here
+  // changes what guests are charged. A copy is cached in this browser so the portal
+  // still works if the server can't be reached.
+  const VAT_CACHE_KEY = "danest_vat";
+  let vatSettings = (function(){
+    try{
+      const c = JSON.parse(localStorage.getItem(VAT_CACHE_KEY) || "null");
+      if(c && typeof c.enabled === "boolean") return c;
+    }catch(e){}
+    return { enabled: true, rate: 7.5 };
+  })();
+  const VAT_BASES = [""];
+  if(location.port !== "3000") VAT_BASES.push("http://localhost:3000");
+
+  async function vatApi(method, body, key){
+    let sawWrongServer = false;
+    for(const base of VAT_BASES){
+      try{
+        const res = await fetch(base + "/api/settings/vat", {
+          method,
+          headers: { "Content-Type": "application/json", "x-admin-key": key || "" },
+          body: body ? JSON.stringify(body) : undefined
+        });
+        const data = await res.json().catch(() => null);
+        if(res.ok && data) return data;
+        // a real answer from our API (e.g. wrong key) - show it
+        if(data && data.error){ const e = new Error(data.error); e.http = true; throw e; }
+        // anything else: this address answered but isn't our API (a static file host, or an
+        // old server.js) - keep trying the next address instead of giving up
+        sawWrongServer = true;
+      }catch(e){ if(e.http) throw e; }
+    }
+    const err = new Error(sawWrongServer
+      ? "The server answered but doesn't have the VAT settings. Replace server.js with the new version, then stop and restart it."
+      : "Server unreachable");
+    err.wrongServer = sawWrongServer;
+    throw err;
+  }
+  function cacheVat(){
+    try{ localStorage.setItem(VAT_CACHE_KEY, JSON.stringify(vatSettings)); }catch(e){}
+  }
+  function priceBreakdown(price, nights){
+    const subtotal = price * nights;
+    const rate = vatSettings.enabled ? vatSettings.rate : 0;
+    const vat = Math.round(subtotal * rate / 100);
+    return { subtotal, vat, rate, total: subtotal + vat };
+  }
+  function renderSettings(){
+    const sw = document.getElementById('vat-switch');
+    const pill = document.getElementById('vat-pill');
+    sw.setAttribute('aria-checked', String(vatSettings.enabled));
+    pill.textContent = vatSettings.enabled ? 'ON' : 'OFF';
+    pill.classList.toggle('off', !vatSettings.enabled);
+    document.getElementById('vat-rate-text').textContent = 'Rate: ' + vatSettings.rate + '%';
+  }
+  function vatStatus(msg, color){
+    const el = document.getElementById('vat-status');
+    el.textContent = msg;
+    el.style.color = color || 'var(--ink-soft)';
+  }
+  document.getElementById('vat-admin-key').value = sessionStorage.getItem('danest_admin_key') || '';
+  document.getElementById('vat-key-toggle').addEventListener('click', () => {
+    const input = document.getElementById('vat-admin-key');
+    const btn = document.getElementById('vat-key-toggle');
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.setAttribute('aria-pressed', String(show));
+    btn.setAttribute('aria-label', show ? 'Hide admin key' : 'Show admin key');
+    btn.querySelector('.ico-eye').style.display = show ? 'none' : '';
+    btn.querySelector('.ico-eye-off').style.display = show ? '' : 'none';
+  });
+  document.getElementById('vat-switch').addEventListener('click', async () => {
+    const sw = document.getElementById('vat-switch');
+    const keyEl = document.getElementById('vat-admin-key');
+    const next = !vatSettings.enabled;
+    sw.disabled = true; vatStatus('Saving…');
+    try{
+      const data = await vatApi('PUT', { enabled: next }, keyEl.value.trim());
+      vatSettings = { enabled: data.enabled, rate: Number(data.rate) || 7.5 };
+      cacheVat();
+      try{ sessionStorage.setItem('danest_admin_key', keyEl.value.trim()); }catch(e){}
+      vatStatus('VAT is now ' + (vatSettings.enabled ? 'ON' : 'OFF') + ' for new bookings.', 'var(--success)');
+    }catch(e){
+      if(e.http || e.wrongServer){
+        vatStatus(e.message, 'var(--danger)');
+      }else{
+        // server not running: apply on this browser only so the site still behaves consistently here
+        vatSettings.enabled = next; cacheVat();
+        vatStatus('Server unreachable — VAT is ' + (next ? 'ON' : 'OFF') + ' on this browser only. Start the server to apply it for all guests.', 'var(--danger)');
+      }
+    }
+    sw.disabled = false; renderSettings();
+  });
+  // load the live setting once when the portal opens
+  vatApi('GET').then(d => {
+    vatSettings = { enabled: d.enabled, rate: Number(d.rate) || 7.5 };
+    cacheVat(); renderSettings();
+  }).catch(e => { renderSettings(); if(e.wrongServer) vatStatus(e.message, 'var(--danger)'); });
 
   // ---------- Reservations ----------
   // Reads/writes the SAME localStorage key the customer-facing index.html
@@ -1000,7 +1160,7 @@
         <td>${b.checkOut || '—'}</td>
         <td>${b.source === 'walk-in' ? 'Walk-in' : 'Online'}</td>
         <td>${statusTagHtml(b.status || 'Confirmed')}</td>
-        <td class="num-col num">${nairaFmt(b.total || 0)}</td>
+        <td class="num-col num">${nairaFmt(b.total || 0)}${(b.vat ?? b.tax) > 0 ? `<br><span style="font-size:11px;color:var(--ink-soft);">incl. VAT ${nairaFmt(b.vat ?? b.tax)}</span>` : ''}</td>
         <td><div class="row-actions">${actions}</div></td>
       `;
       tbody.appendChild(tr);
@@ -1037,16 +1197,14 @@
       return;
     }
 
-    const subtotal = room.price * nights;
-    const tax = Math.round(subtotal * 0.075);
-    const total = subtotal + tax;
+    const { subtotal, vat, rate, total } = priceBreakdown(room.price, nights);
     const list = loadBookings();
     list.push({
       ref: genBookingRef(),
       roomId: room.id, roomName: room.name,
       checkIn, checkOut, nights, guests,
       name, email, phone, notes, pay,
-      subtotal, tax, total,
+      subtotal, vat, vatRate: rate, total,
       status: 'Confirmed',
       source: 'walk-in',
       createdAt: new Date().toISOString(),
@@ -1056,9 +1214,9 @@
     e.target.reset();
     document.getElementById('wi-checkin').value = todayISO();
     document.getElementById('wi-guests').value = 1;
-    statusEl.textContent = 'Booking added.';
+    statusEl.textContent = 'Booking added — total ' + nairaFmt(total) + (vat > 0 ? ' (incl. ' + nairaFmt(vat) + ' VAT).' : '.');
     statusEl.style.color = 'var(--success)';
-    setTimeout(() => { statusEl.textContent = ''; }, 3000);
+    setTimeout(() => { statusEl.textContent = ''; }, 6000);
     renderReservations();
   });
 
@@ -1193,6 +1351,7 @@
       if(target === 'dashboard') renderDashboard();
       if(target === 'log') renderLog();
       if(target === 'reservations') renderReservations();
+      if(target === 'settings') renderSettings();
     });
   });
 
