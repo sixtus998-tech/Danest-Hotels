@@ -513,19 +513,19 @@ const ROOMS = [
   amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
   long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
   pattern:3},
-  {id:'suite', name:'Business Room', tagline:'The full Danest experience, with room to spare', price:42000, capacity:4, beds:'King bed + separate living area', size:60,
+  {id:'business_room', name:'Business Room', tagline:'The full Danest experience, with room to spare', price:42000, capacity:4, beds:'King bed + separate living area', size:60,
   amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
   long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
   pattern:3},
-  {id:'suite', name:'Business Suite', tagline:'The full Danest experience, with room to spare', price:47000, capacity:4, beds:'King bed + separate living area', size:60,
+  {id:'business_suite', name:'Business Suite', tagline:'The full Danest experience, with room to spare', price:47000, capacity:4, beds:'King bed + separate living area', size:60,
   amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
   long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
   pattern:3},
-  {id:'suite', name:'Royal Suite', tagline:'The full Danest experience, with room to spare', price:57000, capacity:4, beds:'King bed + separate living area', size:60,
+  {id:'royal_suite', name:'Royal Suite', tagline:'The full Danest experience, with room to spare', price:57000, capacity:4, beds:'King bed + separate living area', size:60,
   amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
   long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
   pattern:3},
-  {id:'suite', name:'Apartment', tagline:'The full Danest experience, with room to spare', price:60000, capacity:4, beds:'King bed + separate living area', size:60,
+  {id:'apartment', name:'Apartment', tagline:'The full Danest experience, with room to spare', price:60000, capacity:4, beds:'King bed + separate living area', size:60,
   amenities:['Everything in Executive','Private balcony','Jacuzzi','Butler service','Premium bar','Complimentary airport transfer'],
   long:'Our largest accommodation: a separate living area, a private balcony over the city, and a butler on call for whatever the stay requires. Airport transfer is included, so the suite is the first and last thing you experience.',
   pattern:3},
@@ -579,14 +579,17 @@ const TESTIMONIALS = [
       just stays put instead of breaking the page.
    ========================================================================= */
 const PHOTOS = {
-  heroHome:       'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TS4oYpu2rrhQiUVG8Zuwf3i4cXHHkXQX8asnSvRaRsUDO8z_W-WRaSnLAjwf0GJZT3Xhve4MUPzO_VInfb283vyvKyU82VA9sOf7F1uq5oaRcc8DI4B4khNzmZ3v89Euc4tKBV=w252-h168-k-no',   // big image on the homepage
+  heroHome:       'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TkzHvPFedq7t835xCIHF8M7DTUFOoYpHVcFY0z4FtoGJ9dKVJFXiL1Ni8LnLw6l5fM1TIeYwUqskmO9UrT2M8QM3Mzwu__mUJYkZlWOnV0iPoySvR8UjFVb7fcrzS-2NYpaSg8bQ=w253-h168-k-no',   // big image on the homepage
   aboutStory:     'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TV0nfBH4SDHSktHcvr7AhAstvGncK0Or8e4eS9A4dcgXhnLyUBGiL64XMGeyt_n6PM78zJPDF4WCuGeOf4Al725UFBMG_cu8ZchvVWIfrm0eZyubnF8D9X9briejexhzvYXNrEmA=w253-h157-k-no',   // "Our story" section on the About page
   aboutValues:    'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q_wa3_2oXwePAzW91-PIc8GSqM7-0YSMI7LmZ3OQclZilaygaS5tEKHok2Sxy5DfB9hq09HxpLiHrXtaO8J9E0_2P9vEJ1eLn20sY5khoiaHoG_z-15quh5bp6gOoNuw01b78=w252-h189-k-no',   // "Mission & values" section on the About page
   restaurant:     'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T9oaZyPOctGnlbnz-T1ljjkVA5-qMGRlPlTHVhZQzTVciuF8iT8B8H-O8IJG32PcOF46dzt04W-OqmdTTlFJBc6E56TXTsDU7Kc0Ek5Iup41KFGYsuBUscl9yau780Qb1gzvXc=w252-h336-k-no',   // Dining page
   room_standard:  'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SGm43civhPKFJGh_Vmfp59vWA-weF0fJNxJrDfzkVfKi2q_egOscadSPZoN0uTFKnRd_EECxosOVXCsioI55q4Mvq4IvTMsgISH-6GcHTq4WgRDe2wFuEeDq-LG5v-zf8CEjvUjA=w253-h189-k-no',   // Standard Room — used on cards, detail page, and booking
   room_deluxe:    'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R6gI78NCzbdW4BIAIUN2qWOsi1DeoSSC2GFep9hj0wDC7Csq4GIchDnAMlpEC80J6bwOe_YqYwUXAYdu1MOqfNdaN_VfSZJq0YMH1ZruZmnOt6pfzid30R-tnoB0fOMIFhFlQ=w253-h189-k-no',   // Deluxe Room
   room_executive: 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SR0JJvoP2db7cScLVCdxQB5eJN1-zjzpIW46Tn1aHkccqfG6t0zT2OyDIRXpwLZluo5dEMCX5ZX6Q3NkNGoOSaTtmv5ur3_azqfwi4rCsG3sxwP0o9WsQG-sRFsIEp6nE1t6g4_w=w253-h113-k-no',   // Executive Room
-  room_suite:     'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SSbLe5l87zrDUSLue_PvDbbCfy6Vs7J2IpjpZnUuHPBsEukZO0qiEmycoVsjmB-mmN9kc4iaqilHeMd2qBMuvuG158-9uxWnuMj7utHMWd9unXsBYzoNJiA0ISaRfcG4IuLztG7g=w253-h189-k-no',   // Danest Suite
+  room_suite:     'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SSbLe5l87zrDUSLue_PvDbbCfy6Vs7J2IpjpZnUuHPBsEukZO0qiEmycoVsjmB-mmN9kc4iaqilHeMd2qBMuvuG158-9uxWnuMj7utHMWd9unXsBYzoNJiA0ISaRfcG4IuLztG7g=w253-h189-k-no',  // Danest Suite
+  room_business_room: 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Send8yIigoozfd12fG9aGcgCzW4FiSS84i-v3dnuxQCZUwHMgL6VGhj56HTYtHq1TVSezeE1jgCuNjX8hbXtn4w0HH26ftcTNlaA0PwyRJIWbhJ9j15tQRgxy32cQT82SXWOw=w253-h337-k-no',  // Business Room
+  room_business_suite: '',  // Business Suite
+  room_royal_suite:    '',  // Royal Suite
   gallery: ['https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QQLUTP_TKMWtzspfUXWBGVbW5QzCDAQGBH0zELVeNR3f5h1KHMMXf63Cjwb9NuysHMLWt7qaHXJSln_s_5bYTT851uf4e2p2s85DOjXEWdciNZXeBnWCjzoVr3boPOxpJiOP0=w252-h168-k-no', 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QkExHJS09Ut9v7xgR2YwbYxCiC8MNj577m_VDLy1oL2vjjkRl-ctd06TEB5xH6uAL4rytGfpcO1VM7rlx48wb4xTjGPq4bu4fEcU4UKyCTzyia4N6-DvBqqTeUwph9gBSne0GG=w253-h189-k-no', 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QYc0zPPsroHr9n3gvAYmGVu3pu9UiVOhj_oGu3fEE78jQv-BGR9h93oZ3VQH1O2psVoNTt58GRFBdwnhHCF6p9B-2Yolp7P6qpZB2mPu7RHoYu-8FS3kYkUm6RuTQxH4kz1Z0=w252-h168-k-no', 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R6gI78NCzbdW4BIAIUN2qWOsi1DeoSSC2GFep9hj0wDC7Csq4GIchDnAMlpEC80J6bwOe_YqYwUXAYdu1MOqfNdaN_VfSZJq0YMH1ZruZmnOt6pfzid30R-tnoB0fOMIFhFlQ=w253-h189-k-no', 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T9oaZyPOctGnlbnz-T1ljjkVA5-qMGRlPlTHVhZQzTVciuF8iT8B8H-O8IJG32PcOF46dzt04W-OqmdTTlFJBc6E56TXTsDU7Kc0Ek5Iup41KFGYsuBUscl9yau780Qb1gzvXc=w252-h336-k-no', 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SxEm-ezXR0hKob6VP0J1-JlLaMOWSRZJra0MKa5HuKLIMYXUXwSEEK3DvI5q7nKqPt45lFEfvOQKgCoOjjR39raAoRu4mSB5q1K8aMJC12fJrB-oiHuEG4wjHTKe-sp2SWVmY3=w253-h337-k-no', 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RDDiMrABgsvTnmXHqkln8VE27PTVBwKaVcmGP1YNzY2EH9Ajng1FBlm9jDfBQalQZ2pOmpghu8FIuJF8BfPXyRcnmYLb3NbQGlXVcYTDnmv3ARBXb6spotCSsOC5J_LqwClvIe=w253-h168-k-no', 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TfPUFByJNwD-yaVbqIpvEfhy1znhAt3BXnDhNHxTq2oDe3x6BB19H7L5j0t3SdJU2q6aNdTAOEoECCjkIah9BcEvDgK_3QIGrIzGgAGxDfZk3bUFFID28bLTR-hQ4dnS3Lqh5niw=w253-h189-k-no',], // the 8 photos on the Gallery page, in order
 };
 
